@@ -192,7 +192,7 @@ The Illusion of Explanatory Depth Why do we think we understand the world more t
 The Pygmalion effect Why do we perform better when someone has high expectations of us?
 The Sunk Cost Fallacy Why are we likely to continue with an investment even if it would be rational to give it up?
 Zero Risk Bias Why do we seek certainty in risky situations?
-
+lets add data storage for the bias and quiz information.  Let's also add clean transition effects.  Lets also add some daily bias reminders but with the ability to change when the notification shows up.
 
 ## Write up
 
