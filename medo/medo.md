@@ -62,21 +62,29 @@ What problem your app solves and why you built it
 How you structured conversations with MeDo to build your project
 The most impressive feature MeDo helped you create
 
-
-
-## Inspiration
+https://app-b0wu1izexx4x.appmedo.com
 
 ## What it does
-
+geoMaster is a time-based geography quiz game that tests your knowledge of countries, flags, capitals, and world facts with 4 exciting modes.  The four modes are:
+**Country Mode**: Test your ability to match country names with their flags. You will be shown a country name and must select the correct flag from four options.
+**Flag Mode**: Identify countries from their flags. A flag will be displayed and you must choose the correct country name from four options.
+**Capital Mode**: Match capital cities with their country flags. You will see a capital city name and must select the flag of the country it belongs to.
+**Guesser Mode**: Use multiple clues to identify countries. You will be given facts including population, GDP, capital city, and beer consumption to deduce the correct country.
+   
 ## How we built it
-
-## Challenges we ran into
+It was built using the meDo Platform.  Under the hood it is powered by react, tailwind and typescript.  
+In terms of the requirements I first provided the game mechanics and what the four modes would be.  Next I provided data about the different countries.  Lastly, I provided some skeleton code to get the look and feel I wanted.  I also selected the pixel style when prompting.  Updated the requirmenets to change key text, added reset and home buttons.  Added an about section.  Added accessibility checks.
 
 ## Accomplishments that we're proud of
-
-## What we learned
+- Built a fun geography game using a retro game style
+- Has light and dark mode
+- Compatible on mobile and desktop
+- The game is accessible based on WCAG 2.1 standards
 
 ## What's next for geoMaster
+- Increase the number of countries
+- Add 3 more exciting modes
+- Add a gamification and social elements to the game without impacting the game experience
 
 ## Prompt
 persona: game developer
