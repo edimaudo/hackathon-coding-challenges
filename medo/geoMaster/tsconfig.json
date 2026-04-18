@@ -1,0 +1,18 @@
+1{
+2  "compilerOptions": {
+3    "target": "ES2020",
+4    "useDefineForClassFields": true,
+5    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+6    "module": "ESNext",
+7    "skipLibCheck": true,
+8    "baseUrl": ".",
+9    "paths": {
+10      "@/*": ["./src/*"]
+11    }
+12  },
+13  "files": [],
+14  "references": [
+15    { "path": "./tsconfig.app.json" },
+16    { "path": "./tsconfig.node.json" }
+17  ]
+18}
