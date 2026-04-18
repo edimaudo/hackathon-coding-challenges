@@ -1,0 +1,32 @@
+Global:
+2  version: "2.0"
+3  group_email: ""
+4Default:
+5  profile:
+6    - buildProduction
+7Profiles:
+8  - profile:
+9    name: buildProduction
+10    mode: AGENT
+11    environment:
+12      image: DECK_STD_CENTOS7
+13      tools:
+14        - nodejs: 22.latest
+15    build:
+16      command: |
+17        export NODE_ENV=production && sh scripts/build.sh
+18    artifacts:
+19      release: true
+20  - profile:
+21    name: buildDevelopment
+22    mode: AGENT
+23    environment:
+24      image: DECK_STD_CENTOS7
+25      tools:
+26        - nodejs: 22.latest
+27    build:
+28      command: |
+29        export NODE_ENV=development && sh scripts/build.sh
+30    artifacts:
+31      release: true
+32
