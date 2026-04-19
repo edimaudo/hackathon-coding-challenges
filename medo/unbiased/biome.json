@@ -1,0 +1,23 @@
+1{
+2  "files": {
+3    "includes": ["src/**/*.{js,jsx,ts,tsx}"]
+4  },
+5  "linter": {
+6    "enabled": true,
+7    "rules": {
+8      "recommended": false,
+9      "correctness": {
+10        "noUndeclaredDependencies": "error"
+11      },
+12      "suspicious": {
+13        "noRedeclare": "error"
+14      },
+15      "style": {
+16        "noCommonJs": "error"
+17      }
+18    }
+19  },
+20  "formatter": {
+21    "enabled": false
+22  }
+23}
