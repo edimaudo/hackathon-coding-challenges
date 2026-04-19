@@ -648,21 +648,44 @@ The most impressive feature MeDo helped you create
 Are you upset you are making poor decisions? Want to sharpen your cognitive skills? This is where Unbiased comes in.  It is a simple tool to help you sharpen your thinking skills by helping you tackle cognitive biases.
 
 ## What it does
-At its core Unbiased is a responsive web app called Unbiased that helps users sharpen the way they think.  
+At its core Unbiased is a responsive web app called Unbiased that helps users sharpen the way they think.  It gives the users the ability to explore different biases and play games that can help the user better understand biases. 
 
 ## How we built it
-It was built using the medo.dev platform.  
+It was built using the medo.dev platform.  Under the hood it is powered by react, tailwind, typescript and cognitive bias content.  
+
+### Underlying design
+- It should have a responsive design
+- font would be inter or century schoolhouse with fonts of different sizes (small, medium and large)
+- color scheme would be navy blue themed
+- It should be accessible. It should have the ability to change font sizes and have a dark and light mode.  The user should be able to change the mode but it should default to dark mode
+- Should be able to get to every section using a hamburger menu
+- It should have localization with ability to change languages.  The key languages would be English, French and Spanish
+
+### Views
+**Home View**
+It would show bias of the day, Bias Explorer, Bias Detector and Settings.
+
+**Bias Explorer View**
+It should show a list of biases with their name and a high level overview in a card format.  When clicked into It shows the bias name, details about the bias, Where this bias occurs, WHy it happens, WHy it matters, 3 examples of it, How it affects you, how it affects a business, How to avoid it. 
+
+**Bias Detector View**
+This is a quiz section where the user would be tested on their knowledge of biases.  There would be two types of quizzes, name that bias and bias checker.  For name that bias, the user would be posed with a challenge about a type of bias and would have to select the type of bias.   
+For the bias checker game the user would be posed question in order to check their understanding of biases.  Each question would be a scenario and the user would be given 3 options and would have to check.
+
+**Settings**
+This would give the ability the change the design settings for the app
 
 ## Challenges we ran into
+The main challenge I ran into was when I first tried building the app, the medo.dev platform stalled and it could not build the app.  I then decided to delete that version and rebuild it from scratch.  It then worked on the second attempt.  Another issue that cropped up was tackling translations.  When medo.dev built the app, the translation from English to French and English to Spanish was not working seamlessly.  I wrote 2 prompts to make updates to the Bias Explorer section to ensure it worked as expected.
 
-## Accomplishments that we're proud of
 
 ## What we learned
+It was a great experience learning about different biases that we as humans are exposed too.  It made me more cognizant of them.
 
 ## What's next for Unbiased
 - Increase the number of biases that are available
 - Increase language support
-- 
+- Add social and gamification elements to Bias Detector section
 
 Publication link --> https://app-b2nnykhvf30h.appmedo.com
 x post --> @MeDo_CodeFree Sharpen your thinking by using Unbiased (https://app-b2nnykhvf30h.appmedo.com) a tool to tackle cognitive biases #BuiltWithMeDo
