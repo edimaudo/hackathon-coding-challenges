@@ -1,0 +1,103 @@
+id: button-outline-text-foreground-contrast
+2language: tsx
+3files:
+4  - src/**/*.tsx
+5message: "Outline button with text-foreground class causes invisible text. The outline variant has a transparent background, making text-foreground color blend with the background and become unreadable. Use text-primary or another contrasting color instead."
+6rule:
+7  kind: jsx_element
+8  has:
+9    kind: jsx_opening_element
+10    all:
+11      - has:
+12          field: name
+13          regex: "^Button$"
+14      - has:
+15          kind: jsx_attribute
+16          all:
+17            - has:
+18                kind: property_identifier
+19                regex: "^variant$"
+20            - has:
+21                kind: string
+22                has:
+23                  kind: string_fragment
+24                  regex: "^outline$"
+25      - has:
+26          kind: jsx_attribute
+27          all:
+28            - has:
+29                kind: property_identifier
+30                regex: "^className$"
+31            - has:
+32                kind: string
+33                has:
+34                  kind: string_fragment
+35                  regex: "(^|\\s)text-foreground(\\s|$)"
+36---
+37id: button-default-text-primary-contrast
+38language: tsx
+39files:
+40  - src/**/*.tsx
+41message: "Default button with text-primary class causes poor contrast. The default variant has a primary-colored background, making text-primary color blend with the background and become hard to read. Remove the text-primary class or specify a different variant like 'outline' or 'ghost'."
+42rule:
+43  kind: jsx_element
+44  has:
+45    kind: jsx_opening_element
+46    all:
+47      - has:
+48          field: name
+49          regex: "^Button$"
+50      - has:
+51          kind: jsx_attribute
+52          all:
+53            - has:
+54                kind: property_identifier
+55                regex: "^className$"
+56            - has:
+57                kind: string
+58                has:
+59                  kind: string_fragment
+60                  regex: "(^|\\s)text-primary(\\s|$)"
+61      - not:
+62          has:
+63            kind: jsx_attribute
+64            has:
+65              kind: property_identifier
+66              regex: "^variant$"
+67
+68---
+69id: button-outline-white-gray-contrast
+70language: tsx
+71files:
+72  - src/**/*.tsx
+73message: "Outline button with white/gray text color has poor contrast. Remove the text color class and use the default button text color."
+74rule:
+75  kind: jsx_element
+76  has:
+77    kind: jsx_opening_element
+78    all:
+79      - has:
+80          field: name
+81          regex: "^Button$"
+82      - has:
+83          kind: jsx_attribute
+84          all:
+85            - has:
+86                kind: property_identifier
+87                regex: "^variant$"
+88            - has:
+89                kind: string
+90                has:
+91                  kind: string_fragment
+92                  regex: "^outline$"
+93      - has:
+94          kind: jsx_attribute
+95          all:
+96            - has:
+97                kind: property_identifier
+98                regex: "^className$"
+99            - has:
+100                kind: string
+101                has:
+102                  kind: string_fragment
+103                  regex: "(^|\\s)text-(white|gray)(-[0-9]+)?(\\s|$)"
