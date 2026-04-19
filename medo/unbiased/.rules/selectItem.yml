@@ -1,0 +1,28 @@
+1id: selectItemWithEmptyValue
+2language: Tsx
+3files:
+4  - src/**/*.tsx
+5rule:
+6  kind: jsx_opening_element
+7  all:
+8    - has:
+9        kind: identifier
+10        regex: '^SelectItem$'
+11    - has:
+12        kind: jsx_attribute
+13        all:
+14          - has:
+15              kind: property_identifier
+16              regex: '^value$'
+17          - any:
+18              - has:
+19                  kind: string
+20                  regex: '^""$'
+21              - has:
+22                  kind: jsx_expression
+23                  has:
+24                    kind: string
+25                    regex: '^""$'
+26
+27message: "检测到 SelectItem 组件使用空字符串 value: $MATCH， 这是错误用法， 运行时会报错， 请修改， 如果想实现全选，建议使用all代替空字符串"
+28severity: error
