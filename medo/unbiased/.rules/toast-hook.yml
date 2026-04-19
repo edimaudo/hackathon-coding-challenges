@@ -1,0 +1,11 @@
+id: use-toast-import
+2message: Use 'import { toast } from "sonner"' instead of "@/hooks/use-toast"
+3severity: error
+4language: Tsx
+5note: |
+6  The new shadcn/ui pattern uses sonner for toast notifications.
+7  Replace: import { toast } from "@/hooks/use-toast"
+8  With: import { toast } from "sonner"
+9
+10rule:
+11  pattern: import { $$$IMPORTS } from "@/hooks/use-toast"
