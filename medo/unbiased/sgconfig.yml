@@ -1,0 +1,5 @@
+ruleDirs:
+2- .rules
+3languageGlobs:
+4  TypeScript: ["*.ts"]
+5  Tsx: ["*.tsx"]
