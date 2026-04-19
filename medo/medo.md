@@ -644,10 +644,30 @@ What problem your app solves and why you built it
 How you structured conversations with MeDo to build your project
 The most impressive feature MeDo helped you create
 
+## Inspiration
+Are you upset you are making poor decisions? Want to sharpen your cognitive skills? This is where Unbiased comes in.  It is a simple tool to help you sharpen your thinking skills by helping you tackle cognitive biases.
 
-x link --> 
-Publication link --> 
+## What it does
+At its core Unbiased is a responsive web app called Unbiased that helps users sharpen the way they think.  
+
+## How we built it
+It was built using the medo.dev platform.  
+
+## Challenges we ran into
+
+## Accomplishments that we're proud of
+
+## What we learned
+
+## What's next for Unbiased
+- Increase the number of biases that are available
+- Increase language support
+- 
+
+Publication link --> https://app-b2nnykhvf30h.appmedo.com
+x post --> @MeDo_CodeFree Sharpen your thinking by using Unbiased (https://app-b2nnykhvf30h.appmedo.com) a tool to tackle cognitive biases #BuiltWithMeDo
+x link --> https://x.com/edimaudo/status/2045929048363110698?s=20
+
 
 #BuiltWithMeDo
 
-@MeDo_CodeFree
