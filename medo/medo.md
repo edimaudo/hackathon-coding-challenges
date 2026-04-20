@@ -741,9 +741,9 @@ When the user selects United States content use content from https://github.com/
 When the user selects Canada content use content from https://github.com/edimaudo/finWise and populate the views
 
 
-### Write up
 
-## Write Up
+
+### Write Up
 
 Publication link --> 
 
@@ -755,51 +755,54 @@ x link -->
 @MeDo_CodeFree
 
 
-Inspiration
+## Inspiration
+Financial literacy in the US and Canada shows high awareness but low practical application, with significant gaps in understanding debt, investment, and inflation. I wanted to build an app that helps people close this gap.  
 
-I built this app because I wanted to create a simple tool for people to gain financial literacy.
+## What it does
+It helps Canadians and American build core financial skills, all while maintaining engagement through personalization. It has a quiz assessment to check your financial literacy, Also have a quiz based on your financial literacy level to help you learn. If you want to learn more about different financial and economic terms you can check out the glossary.
 
-What it does
-
-It help Canadians build financial skills, all while maintaining engagement through personalization. It has a quiz assessment to check your financial literacy, Also have a quiz based on your financial literacy level to help you learn. If you want to learn more about different financial and economic terms you can check out the glossary.
-
-How we built it
-
-It was built using html, css and typescript. Leveraged different websites to get the questions. Also used goggle gemini to clean up the code.
-
-Challenges we ran into
-
-The key challenge was generating the questions. Initially focused on North America but decided to focus on Canada only.
-
-Accomplishments that we're proud of
-
-Happy I was able to build the app.
-
-What we learned
-
-Financial literacy is a very massive topic.
-
-What's next for finWise
-
-Continue to add more content, update the quiz section, add new tools (credit card comparision) and templates (budget tracker)
+## How we built it
 
 
-Inspiration
+It was built using the medo.dev platform.  Under the hood it is powered by react, tailwind, typescript and cognitive bias content.  
 
-I built this app because I wanted to create a simple tool for people to gain financial literacy especially in America.
+### Underlying design
+- It should have a responsive design
+- font would be inter or century schoolhouse with fonts of different sizes (small, medium and large)
+- color scheme would be navy blue themed
+- It should be accessible. It should have the ability to change font sizes and have a dark and light mode.  The user should be able to change the mode but it should default to dark mode
+- Should be able to get to every section using a hamburger menu
+- It should have localization with ability to change languages.  The key languages would be English, French and Spanish
 
-What it does
+### Views
+**Home View**
+It would show bias of the day, Bias Explorer, Bias Detector and Settings.
 
-It helps Americans build core financial skills, all while maintaining engagement through personalization. It has a quiz assessment to check your financial literacy, Also have a quiz based on your financial literacy level to help you learn. If you want to learn more about different financial and economic terms you can check out the glossary.
+**Bias Explorer View**
+It should show a list of biases with their name and a high level overview in a card format.  When clicked into It shows the bias name, details about the bias, Where this bias occurs, WHy it happens, WHy it matters, 3 examples of it, How it affects you, how it affects a business, How to avoid it. 
 
-How we built it
+**Bias Detector View**
+This is a quiz section where the user would be tested on their knowledge of biases.  There would be two types of quizzes, name that bias and bias checker.  For name that bias, the user would be posed with a challenge about a type of bias and would have to select the type of bias.   
+For the bias checker game the user would be posed question in order to check their understanding of biases.  Each question would be a scenario and the user would be given 3 options and would have to check.
 
-It was built using html, css and typescript. Also, leveraged different finance related websites to get the questions. Lastly, used goggle gemini to clean up the code.
+**Settings**
+This would give the ability the change the design settings for the app
 
-Challenges we ran into
+## Challenges we ran into
+The main challenge was getting the financial content.  There was so much information out there so had to narrow it down.
 
-The key challenge was generating the questions.
 
-What's next for dollarWize
 
-Nothing on the horizon yet but potentially looking to add more finance related content and tools for example expense tracker, credit card comparison tool
+
+## What's next for PennyWize
+
+- Increase the amount of financial content and personalization
+- add tools that users can leverage to drive better financial decision making --> expense tracker, credit card comparison tool
+- Leverge Large language models to be able to provide scenarios and different ways to explain financial topics
+
+
+
+
+
+
+
