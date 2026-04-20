@@ -764,38 +764,37 @@ It helps Canadians and American build core financial skills, all while maintaini
 ## How we built it
 
 
-It was built using the medo.dev platform.  Under the hood it is powered by react, tailwind, typescript and cognitive bias content.  
+It was built using the medo.dev platform.  Under the hood it is powered by react, tailwind, typescript and finance content from US and Canada.  The app was built using the deep build prompt the editorial style was selected in the medo.dev platform.  All requirements were provided upfront and some tweaks such as changing some of the names was done as separate prompts.    
 
 ### Underlying design
 - It should have a responsive design
-- font would be inter or century schoolhouse with fonts of different sizes (small, medium and large)
-- color scheme would be navy blue themed
-- It should be accessible. It should have the ability to change font sizes and have a dark and light mode.  The user should be able to change the mode but it should default to dark mode
-- Should be able to get to every section using a hamburger menu
+- font would be Helvetica with fonts of different sizes
+- A set of color schemes were provided
+- It should be accessible following WCAG 2.1 guidelines
+- It should have dark and light mode.  The user should be able to change the mode but it should default to dark mode
 - It should have localization with ability to change languages.  The key languages would be English, French and Spanish
+- Ability to change content as US and Canadian financial content is different
 
 ### Views
 **Home View**
-It would show bias of the day, Bias Explorer, Bias Detector and Settings.
+This is the landing page for the app. The user can navigate to different sections (Assessment, Quiz, Glossary, Settings).
 
-**Bias Explorer View**
-It should show a list of biases with their name and a high level overview in a card format.  When clicked into It shows the bias name, details about the bias, Where this bias occurs, WHy it happens, WHy it matters, 3 examples of it, How it affects you, how it affects a business, How to avoid it. 
+**Assessment View**
+It is used to help the user discover their current financial knowledge.  Based on your score it would then give you a level (Novice, Intermediate, Advanced).
 
-**Bias Detector View**
-This is a quiz section where the user would be tested on their knowledge of biases.  There would be two types of quizzes, name that bias and bias checker.  For name that bias, the user would be posed with a challenge about a type of bias and would have to select the type of bias.   
-For the bias checker game the user would be posed question in order to check their understanding of biases.  Each question would be a scenario and the user would be given 3 options and would have to check.
+**Quiz View**
+Gives the user the abiility to test their financial knowledge with personalized questions based on your level (Novice, Intermediate, Advanced) or a combination of levels.
 
-**Settings**
-This would give the ability the change the design settings for the app
+**Glossary View**
+Searchable list of financial terms that are tailored to the location (US or Canada).  Can also search by terms or level (Novice, Intermediate, Advanced). 
+
+**Settings View**
+This would give the ability the change the design settings for the app.  Can check font size, language, content, Display Mode.
 
 ## Challenges we ran into
 The main challenge was getting the financial content.  There was so much information out there so had to narrow it down.
 
-
-
-
 ## What's next for PennyWize
-
 - Increase the amount of financial content and personalization
 - add tools that users can leverage to drive better financial decision making --> expense tracker, credit card comparison tool
 - Leverge Large language models to be able to provide scenarios and different ways to explain financial topics
