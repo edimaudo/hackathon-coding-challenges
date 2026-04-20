@@ -694,3 +694,112 @@ x link --> https://x.com/edimaudo/status/2045929048363110698?s=20
 
 #BuiltWithMeDo
 
+
+## PennyWize
+
+### Prompt
+persona: experienced web developer with financial knowledge and insights
+context: I would like to build a financial learning platform focused on United States and Canada.
+Requirements:
+- It should have a responsive web design
+- font would be Helvetica or inter or century schoolhouse
+- color scheme (--primary-blue: #3e688c;
+    --success-green: #03a63c;
+    --secondary-green: #5ba66e;
+    --accent-teal: #69bfbf;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #666666;
+    --text-dark: #333333;
+    --error-red: #dc3545;)
+- It should be accessible following WCAG 2.1 guidelines
+- It should have the ability to change font sizes.  When changed it should change all aspects of the app
+- It should have a dark and light mode.  The user should be able to change the mode but it should default to dark mode.  When it changes it should apply to all aspects of the app
+- It should have localization with ability to change languages.  The key languages would be English, French and Spanish.  When there is a language change it should change all content to the new language
+- It should have one other content toggle (Content which would either be United States or Canada).  When changed it should change all aspects of the app
+
+
+Views
+Landing Page
+
+Financial Literacy Assessment
+
+Quiz
+
+Glossary
+
+Settings
+This would house be the area where the user can adjust the settings
+Settings include:
+- font size
+- dark or light mode
+- localization language
+- content
+
+When the user selects United States content use content from https://github.com/edimaudo/dollarWize and populate the views
+When the user selects Canada content use content from https://github.com/edimaudo/finWise and populate the views
+
+
+### Write up
+
+## Write Up
+
+Publication link --> 
+
+x info --> How good is your geography knowledge @MeDo_CodeFree? Level up by playing geoMaster(https://app-b0wu1izexx4x.appmedo.com) #BuiltWithMeDo
+x link --> 
+
+#BuiltWithMeDo
+
+@MeDo_CodeFree
+
+
+Inspiration
+
+I built this app because I wanted to create a simple tool for people to gain financial literacy.
+
+What it does
+
+It help Canadians build financial skills, all while maintaining engagement through personalization. It has a quiz assessment to check your financial literacy, Also have a quiz based on your financial literacy level to help you learn. If you want to learn more about different financial and economic terms you can check out the glossary.
+
+How we built it
+
+It was built using html, css and typescript. Leveraged different websites to get the questions. Also used goggle gemini to clean up the code.
+
+Challenges we ran into
+
+The key challenge was generating the questions. Initially focused on North America but decided to focus on Canada only.
+
+Accomplishments that we're proud of
+
+Happy I was able to build the app.
+
+What we learned
+
+Financial literacy is a very massive topic.
+
+What's next for finWise
+
+Continue to add more content, update the quiz section, add new tools (credit card comparision) and templates (budget tracker)
+
+
+Inspiration
+
+I built this app because I wanted to create a simple tool for people to gain financial literacy especially in America.
+
+What it does
+
+It helps Americans build core financial skills, all while maintaining engagement through personalization. It has a quiz assessment to check your financial literacy, Also have a quiz based on your financial literacy level to help you learn. If you want to learn more about different financial and economic terms you can check out the glossary.
+
+How we built it
+
+It was built using html, css and typescript. Also, leveraged different finance related websites to get the questions. Lastly, used goggle gemini to clean up the code.
+
+Challenges we ran into
+
+The key challenge was generating the questions.
+
+What's next for dollarWize
+
+Nothing on the horizon yet but potentially looking to add more finance related content and tools for example expense tracker, credit card comparison tool
