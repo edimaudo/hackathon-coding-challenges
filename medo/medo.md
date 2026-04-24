@@ -745,9 +745,9 @@ When the user selects Canada content use content from https://github.com/edimaud
 
 ### Write Up
 
-Publication link --> 
+Publication link --> https://app-b4gzyh90bnk1.appmedo.com
 
-x info --> How good is your geography knowledge @MeDo_CodeFree? Level up by playing geoMaster(https://app-b0wu1izexx4x.appmedo.com) #BuiltWithMeDo
+x info --> @MeDo_CodeFree Living in the US or Canada? Want to improve your financial literacy? Level up using smartly using PennyWize(https://app-b4gzyh90bnk1.appmedo.com). #BuiltWithMeDo
 x link --> 
 
 #BuiltWithMeDo
