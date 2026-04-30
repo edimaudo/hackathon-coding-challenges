@@ -805,3 +805,15 @@ The main challenge was getting the financial content.  There was so much informa
 
 
 
+## Kaho
+
+### Write Up
+
+Publication link --> https://app-b4gzyh90bnk1.appmedo.com
+
+x info --> @MeDo_CodeFree Living in the US or Canada? Want to improve your financial literacy? Level up using smartly using PennyWize(https://app-b4gzyh90bnk1.appmedo.com). #BuiltWithMeDo
+x link --> 
+
+#BuiltWithMeDo
+
+@MeDo_CodeFree
