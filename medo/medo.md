@@ -811,8 +811,8 @@ The main challenge was getting the financial content.  There was so much informa
 
 Publication link --> https://app-b4gzyh90bnk1.appmedo.com
 
-x info --> @MeDo_CodeFree Living in the US or Canada? Want to improve your financial literacy? Level up using smartly using PennyWize(https://app-b4gzyh90bnk1.appmedo.com). #BuiltWithMeDo
-x link --> 
+x info --> @MeDo_CodeFree Tired of your construction projects being late and blowing past the budget? Build better using kaho(https://app-b4gzyh90bnk1.appmedo.com). #BuiltWithMeDo
+x link --> https://x.com/edimaudo/status/2049982372464980253?s=20
 
 #BuiltWithMeDo
 
