@@ -817,3 +817,77 @@ x link --> https://x.com/edimaudo/status/2049982372464980253?s=20
 #BuiltWithMeDo
 
 @MeDo_CodeFree
+
+
+## Inspiration
+The construction industry loses $1.6 trillion annually to due to significant project delays, cost overruns, and inconsistent communication.  From a technology perspective this is what was noticed:
+- Scattered data across emails, spreadsheets, and paper reports
+- poor decision-making by stakeholders due to poor information
+- Overdue invoices discovered weeks too late
+- Disconnected stakeholders (PMs, clients, subcontractors) with no shared visibility
+Based on this a smarter project management tool is needed that helps wrangle the chaos and helps builders to build better.
+
+## What it does
+Kaho is smart construction management system which leverages analytics, good system design backed by experience. It transforms construction from choatic to smarter decisions and systemic success.
+
+## How we built it
+It was a web app built using the medo.dev platform but powered primarily by supabase, react, tailwind-css and typescript.  It was designed using the editorial and I also used a requirements.md file which was finetuned to ensure medo.dev would be able to build the app. 
+
+
+### Frontend
+- React 18 with TypeScript for type-safe component development
+- Vite for lightning-fast builds a
+- Tailwind CSS 
+- React Router for multi-page navigation
+
+### Backend & Database
+- Supabase
+
+## key Features
+
+### Command Center
+- Live dashboard with (Urgent/Today/This Week)
+- Active project contexts with risk assessments
+- Proactive recommendations 
+- Project risk scoring based on budget, timeline, and payment patterns
+
+### Business Control
+- Admins: Full system view
+- Project Managers: Project oversight and team coordination
+- Clients: Transparent project visibility and invoice tracking
+- Contractors & Subcontractors: Work assignments and payment status
+
+
+### Comprehensive Management
+- Projects with real-time status tracking
+- Invoices with payment automation and overdue alerts
+- Daily reports with clear narratives from field notes
+- Materials inventory with consumption tracking
+- Proposals with client collaboration
+- Document management with version control
+
+### Smart Design
+- Bilingual support (English and French)
+- WCAG Compliant
+- Responsive design (desktop-first with mobile adaptation)
+- Multi-font size support
+- Dark/Light mode support
+
+## Challenges we ran into
+- The main issue was fine tuning the requirements document.  I spent more time improving the going over the document and fine-tuning it before putting it into the medo.dev platform.   
+
+
+## What we learned
+- Construction can be a messy business but with good design it can be less chaotic
+
+## What's next for Kaho
+- Predictive timeline forecasting using historical data
+- Automated budget variance analysis
+- smarter project scheduling including weather disruptions + resource allocation planning
+- Improved visualization for project timelines
+- Budget tracking with detailed cost breakdown 
+- Timesheet management for contractors & subcontractors
+- Improved Work order system with approval workflows
+- Stripe for payment processing
+- Twilio for SMS notifications
+- Accounting Integration (QuickBooks, Xero)
