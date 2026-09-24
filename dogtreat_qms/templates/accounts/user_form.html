@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if creating %}{% trans "New user" %}{% else %}{% trans "Edit user" %}{% endif %}{% endblock %}
+{% block content %}
+<h1>{% if creating %}{% trans "New user" %}{% else %}{% trans "Edit user" %}: {{ target_user }}{% endif %}</h1>
+<div class="card" style="max-width:520px;">
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<span class="help-text">{{ field.help_text }}</span>{% endif %}
+        {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn--primary">{% trans "Save" %}</button>
+    <a class="btn" href="{% url 'accounts:user_list' %}">{% trans "Cancel" %}</a>
+  </form>
+</div>
+{% endblock %}

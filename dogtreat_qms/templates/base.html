@@ -1,0 +1,69 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% trans "BRC Quality Records" %}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body data-theme="{{ ui_theme }}" data-font-scale="{{ ui_font_scale }}">
+  <a class="skip-link" href="#main-content">{% trans "Skip to main content" %}</a>
+
+  <header class="app-bar">
+    <a class="app-bar__brand" href="{% url 'core:dashboard' %}">{% trans "BRC Quality Records" %}</a>
+    <div class="app-bar__spacer"></div>
+    <div class="app-bar__controls">
+
+      <div class="toggle-group" role="group" aria-label="{% trans 'Text size' %}">
+        <button type="button" data-font-btn="small" aria-label="{% trans 'Small text' %}" aria-pressed="{% if ui_font_scale == 'small' %}true{% else %}false{% endif %}">A<sub aria-hidden="true">-</sub></button>
+        <button type="button" data-font-btn="medium" aria-label="{% trans 'Medium text' %}" aria-pressed="{% if ui_font_scale == 'medium' %}true{% else %}false{% endif %}">A</button>
+        <button type="button" data-font-btn="large" aria-label="{% trans 'Large text' %}" aria-pressed="{% if ui_font_scale == 'large' %}true{% else %}false{% endif %}">A<sup aria-hidden="true">+</sup></button>
+      </div>
+
+      <div class="toggle-group" role="group" aria-label="{% trans 'Color theme' %}">
+        <button type="button" data-theme-btn="light" aria-pressed="{% if ui_theme == 'light' %}true{% else %}false{% endif %}">{% trans "Light" %}</button>
+        <button type="button" data-theme-btn="dark" aria-pressed="{% if ui_theme == 'dark' %}true{% else %}false{% endif %}">{% trans "Dark" %}</button>
+      </div>
+
+      <form action="{% url 'set_language' %}" method="post" class="stack" style="flex-direction:row; gap:0.25rem; margin:0;">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <label class="sr-only" for="lang-select">{% trans "Language" %}</label>
+        <select id="lang-select" name="language" onchange="this.form.submit()" aria-label="{% trans 'Language' %}">
+          {% get_current_language as CURRENT_LANGUAGE %}
+          {% get_available_languages as AVAILABLE_LANGUAGES %}
+          {% for code, name in AVAILABLE_LANGUAGES %}
+            <option value="{{ code }}" {% if code == CURRENT_LANGUAGE %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+
+      {% if user.is_authenticated %}
+        <span class="text-secondary" style="font-size:0.9rem;">{{ user.get_full_name|default:user.username }}</span>
+        {% if user.is_administrator %}
+          <a class="btn btn--small" href="{% url 'accounts:user_list' %}">{% trans "Admin" %}</a>
+        {% endif %}
+        <form action="{% url 'accounts:logout' %}" method="post" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn--small">{% trans "Log out" %}</button>
+        </form>
+      {% endif %}
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    {% if messages %}
+      <ul class="messages" role="status">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{% static 'js/preferences.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

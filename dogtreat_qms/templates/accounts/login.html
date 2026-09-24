@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Sign in" %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px; margin:2rem auto;">
+  <h1>{% trans "Sign in" %}</h1>
+  <p class="text-secondary">{% trans "BRC Quality Records System" %}</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <ul class="messages"><li class="error">{{ form.non_field_errors|join:" " }}</li></ul>
+    {% endif %}
+    <div class="field">
+      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+      {{ form.username }}
+      {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    <div class="field">
+      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      {{ form.password }}
+      {% if form.password.errors %}<ul class="errorlist">{% for e in form.password.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    </div>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="btn btn--primary" style="width:100%;">{% trans "Sign in" %}</button>
+  </form>
+</div>
+{% endblock %}

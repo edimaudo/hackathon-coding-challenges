@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Print" %} — {% trans "Cooked Production Yield Log" %}{% endblock %}
+{% block content %}
+<div class="no-print" style="margin-bottom:1rem;">
+  <button class="btn btn--primary" onclick="window.print()">{% trans "Print" %}</button>
+</div>
+
+{% for record in records %}
+<article class="card" style="page-break-after: always;">
+  <h1>{% trans "Cooked Production Yield Log" %}</h1>
+  <div class="row">
+    <p><strong>{% trans "Type of product" %}:</strong> {{ record.type_of_product }}</p>
+    <p><strong>{% trans "Record date" %}:</strong> {{ record.record_date }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Raw lot number" %}:</strong> {{ record.raw_lot_number }}</p>
+    <p><strong>{% trans "Finished lot number" %}:</strong> {{ record.finished_lot_number }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Date out of oven" %}:</strong> {{ record.date_out_of_oven }}</p>
+    <p><strong>{% trans "Date packaged" %}:</strong> {{ record.date_packaged }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Date in hot room" %}:</strong> {% if record.date_in_hot_room_na %}{% trans "N/A" %}{% else %}{{ record.date_in_hot_room }}{% endif %}</p>
+    <p><strong>{% trans "Date out hot room" %}:</strong> {% if record.date_out_hot_room_na %}{% trans "N/A" %}{% else %}{{ record.date_out_hot_room }}{% endif %}</p>
+  </div>
+
+  <table>
+    <thead><tr><th>{% trans "Packaging description" %}</th><th>{% trans "Size" %}</th><th>{% trans "Weight (lbs)" %}</th><th>{% trans "Piece count" %}</th></tr></thead>
+    <tbody>
+      {% for line in record.packaging_lines.all %}
+      <tr><td>{{ line.lot_description }}</td><td>{{ line.size_description }}</td><td>{{ line.weight }}</td>
+        <td>{% if line.piece_count_na %}{% trans "N/A" %}{% else %}{{ line.piece_count }}{% endif %}</td></tr>
+      {% endfor %}
+      <tr><td colspan="2">{% trans "Total" %}</td><td><strong>{{ record.total_finished_weight }}</strong></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <p><strong>{% trans "Combos" %}:</strong> {{ record.combos_used }}</p>
+    <p><strong>{% trans "Lids" %}:</strong> {{ record.combo_lids_used }}</p>
+    <p><strong>{% trans "Liners" %}:</strong> {{ record.combo_liners_used }}</p>
+    <p><strong>{% trans "Labels" %}:</strong> {{ record.labels_used }}</p>
+    <p><strong>{% trans "Boxes" %}:</strong> {{ record.boxes_used }}</p>
+    <p><strong>{% trans "Box liners" %}:</strong> {{ record.box_liners_used }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Waste weight" %}:</strong> {{ record.waste_weight_lbs }} lbs</p>
+    <p><strong>{% trans "Yield %" %}:</strong> {{ record.yield_percent|default:"—" }}</p>
+  </div>
+
+  <table>
+    <thead><tr><th>{% trans "Initials" %}</th><th>{% trans "Task" %}</th><th>{% trans "Time (hrs)" %}</th></tr></thead>
+    <tbody>
+      {% for line in record.employee_tasks.all %}
+      <tr><td>{{ line.employee_initials }}</td><td>{{ line.task }}</td><td>{{ line.time_to_complete_hours }}</td></tr>
+      {% endfor %}
+      <tr><td colspan="2">{% trans "Total time" %}</td><td><strong>{{ record.total_time_hours }}</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <p><strong>{% trans "Production (completed by)" %}:</strong>
+      {% if record.completed_by %}{{ record.completed_by }} — {{ record.completed_at|date:"SHORT_DATETIME_FORMAT" }}{% else %}—{% endif %}</p>
+    <p><strong>{% trans "QA (reviewed by)" %}:</strong>
+      {% if record.reviewed_by %}{{ record.reviewed_by }} — {{ record.reviewed_at|date:"SHORT_DATETIME_FORMAT" }}{% else %}—{% endif %}</p>
+  </div>
+</article>
+{% endfor %}
+{% endblock %}

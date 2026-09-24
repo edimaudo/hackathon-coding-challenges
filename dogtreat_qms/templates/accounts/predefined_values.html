@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Predefined values" %}{% endblock %}
+{% block content %}
+<h1>{% trans "Predefined dropdown values" %}</h1>
+<p class="text-secondary">{% trans "Add new options for a form's dropdown fields, or deactivate ones no longer used (deactivating keeps historical records intact)." %}</p>
+
+<div class="card" style="max-width:520px;">
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<span class="help-text">{{ field.help_text }}</span>{% endif %}
+        {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn--primary">{% trans "Add value" %}</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{% trans "Form" %}</th><th>{% trans "Field" %}</th><th>{% trans "Value (EN)" %}</th><th>{% trans "Value (ES)" %}</th><th>{% trans "Active" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for v in values %}
+      <tr>
+        <td>{{ v.form_type.name_en }}</td>
+        <td>{{ v.field_key }}</td>
+        <td>{{ v.value_en }}</td>
+        <td>{{ v.value_es|default:"—" }}</td>
+        <td>{% if v.is_active %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+        <td>
+          <form action="{% url 'accounts:predefined_value_toggle' v.id %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn btn--small" type="submit">
+              {% if v.is_active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %}
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

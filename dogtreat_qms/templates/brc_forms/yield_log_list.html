@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Cooked Production Yield Log" %}{% endblock %}
+{% block content %}
+<div class="row" style="align-items:center;">
+  <h1 class="mt-0">{% trans "Cooked Production Yield Log" %}</h1>
+  {% if can_enter %}
+    <a class="btn btn--primary" style="flex:0 0 auto;" href="{% url 'brc_forms:yield_log_create' %}">{% trans "New record" %}</a>
+  {% endif %}
+</div>
+
+<form method="get" class="card">
+  <div class="row">
+    <div class="field">
+      <label for="{{ search_form.date_from.id_for_label }}">{{ search_form.date_from.label }}</label>
+      {{ search_form.date_from }}
+    </div>
+    <div class="field">
+      <label for="{{ search_form.date_to.id_for_label }}">{{ search_form.date_to.label }}</label>
+      {{ search_form.date_to }}
+    </div>
+    <div class="field">
+      <label for="{{ search_form.lot_number.id_for_label }}">{{ search_form.lot_number.label }}</label>
+      {{ search_form.lot_number }}
+    </div>
+    <div class="field">
+      <label for="{{ search_form.status.id_for_label }}">{{ search_form.status.label }}</label>
+      {{ search_form.status }}
+    </div>
+  </div>
+  <button type="submit" class="btn btn--primary">{% trans "Search" %}</button>
+  <a class="btn" href="{% url 'brc_forms:cooked_yield_list' %}">{% trans "Clear" %}</a>
+</form>
+
+<form method="get" action="{% url 'brc_forms:yield_log_print_batch' %}" target="_blank" class="card">
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th><span class="sr-only">{% trans "Select" %}</span></th>
+        <th>{% trans "Record date" %}</th><th>{% trans "Finished lot #" %}</th>
+        <th>{% trans "Status" %}</th><th>{% trans "Created by" %}</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in records %}
+      <tr>
+        <td><input type="checkbox" name="id" value="{{ r.id }}" aria-label="{% trans 'Select record for printing' %}"></td>
+        <td>{{ r.record_date }}</td>
+        <td>{{ r.finished_lot_number }}</td>
+        <td><span class="status-pill status-pill--{{ r.status }}">{{ r.get_status_display }}</span></td>
+        <td>{{ r.created_by }}</td>
+        <td><a class="btn btn--small" href="{% url 'brc_forms:yield_log_detail' r.id %}">{% trans "View" %}</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-secondary">{% trans "No records match your search." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% if records %}
+    <button type="submit" class="btn">{% trans "Print selected" %}</button>
+  {% endif %}
+</form>
+{% endblock %}

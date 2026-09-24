@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Cooked Production Yield Log" %}{% endblock %}
+{% block content %}
+<h1>{% if record %}{% trans "Edit record" %} #{{ record.id }}{% else %}{% trans "New record" %}{% endif %}</h1>
+{% if record %}<p><span class="status-pill status-pill--{{ record.status }}">{{ record.get_status_display }}</span></p>{% endif %}
+
+<form method="post" novalidate>
+  {% csrf_token %}
+
+  <fieldset>
+    <legend>{% trans "Product & lot identification" %}</legend>
+    <div class="row">
+      <div class="field">
+        <label for="{{ form.record_date.id_for_label }}">{{ form.record_date.label }}</label>
+        {{ form.record_date }}
+      </div>
+      <div class="field">
+        <label for="{{ form.type_of_product.id_for_label }}">{{ form.type_of_product.label }}</label>
+        {{ form.type_of_product }}
+        {% if form.type_of_product.errors %}<ul class="errorlist">{% for e in form.type_of_product.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="{{ form.raw_lot_number.id_for_label }}">{{ form.raw_lot_number.label }}</label>
+        {{ form.raw_lot_number }}
+      </div>
+      <div class="field">
+        <label for="{{ form.finished_lot_number.id_for_label }}">{{ form.finished_lot_number.label }}</label>
+        {{ form.finished_lot_number }}
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Dates" %}</legend>
+    <div class="row">
+      <div class="field">
+        <label for="{{ form.date_out_of_oven.id_for_label }}">{{ form.date_out_of_oven.label }}</label>
+        {{ form.date_out_of_oven }}
+        {% if form.date_out_of_oven.errors %}<ul class="errorlist">{% for e in form.date_out_of_oven.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+      <div class="field">
+        <label for="{{ form.date_packaged.id_for_label }}">{{ form.date_packaged.label }}</label>
+        {{ form.date_packaged }}
+        {% if form.date_packaged.errors %}<ul class="errorlist">{% for e in form.date_packaged.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <span>{{ form.date_in_hot_room_combined.label }}</span>
+        <div class="row" style="align-items:center;">
+          {{ form.date_in_hot_room_combined }}
+        </div>
+        <span class="help-text">{% trans "Check N/A if this batch didn't use the hot room." %}</span>
+      </div>
+      <div class="field">
+        <span>{{ form.date_out_hot_room_combined.label }}</span>
+        <div class="row" style="align-items:center;">
+          {{ form.date_out_hot_room_combined }}
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Packaging" %}</legend>
+    {{ packaging_fs.management_form }}
+    <div class="table-wrap">
+    <table id="packaging-table">
+      <thead><tr>
+        <th>{% trans "Packaging description" %}</th><th>{% trans "Size" %}</th>
+        <th>{% trans "Weight (lbs)" %}</th><th>{% trans "Piece count" %}</th><th>{% trans "N/A" %}</th><th>{% trans "Remove" %}</th>
+      </tr></thead>
+      <tbody>
+        {% for pf in packaging_fs.forms %}
+        <tr class="formset-row">
+          {% for hidden in pf.hidden_fields %}{{ hidden }}{% endfor %}
+          <td>{{ pf.lot_description }}</td>
+          <td>{{ pf.size_description }}</td>
+          <td>{{ pf.weight }}</td>
+          <td>{{ pf.piece_count }}</td>
+          <td>{{ pf.piece_count_na }}</td>
+          <td>{% if pf.instance.pk %}{{ pf.DELETE }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <button type="button" class="btn btn--small" data-add-row="packaging">{% trans "Add row" %}</button>
+    <p class="text-secondary">{% trans "Total finished weight" %}: <strong id="packaging-total">0.00</strong> lbs</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Consumables used" %}</legend>
+    <div class="row">
+      <div class="field"><label for="{{ form.combos_used.id_for_label }}">{{ form.combos_used.label }}</label>{{ form.combos_used }}</div>
+      <div class="field"><label for="{{ form.combo_lids_used.id_for_label }}">{{ form.combo_lids_used.label }}</label>{{ form.combo_lids_used }}</div>
+      <div class="field"><label for="{{ form.combo_liners_used.id_for_label }}">{{ form.combo_liners_used.label }}</label>{{ form.combo_liners_used }}</div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="{{ form.labels_used.id_for_label }}">{{ form.labels_used.label }}</label>{{ form.labels_used }}</div>
+      <div class="field"><label for="{{ form.boxes_used.id_for_label }}">{{ form.boxes_used.label }}</label>{{ form.boxes_used }}</div>
+      <div class="field"><label for="{{ form.box_liners_used.id_for_label }}">{{ form.box_liners_used.label }}</label>{{ form.box_liners_used }}</div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Waste & yield" %}</legend>
+    <div class="row">
+      <div class="field"><label for="{{ form.waste_weight_lbs.id_for_label }}">{{ form.waste_weight_lbs.label }}</label>{{ form.waste_weight_lbs }}</div>
+      <div class="field">
+        <label for="{{ form.yield_percent.id_for_label }}">{{ form.yield_percent.label }}</label>
+        {{ form.yield_percent }}
+        <span class="help-text">{% trans "Optional at entry time — confirmed during supervisor review." %}</span>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Employees & tasks" %}</legend>
+    {{ employee_fs.management_form }}
+    <div class="table-wrap">
+    <table id="employee-table">
+      <thead><tr>
+        <th>{% trans "Initials" %}</th><th>{% trans "Task" %}</th><th>{% trans "Time to complete (hrs)" %}</th><th>{% trans "Remove" %}</th>
+      </tr></thead>
+      <tbody>
+        {% for ef in employee_fs.forms %}
+        <tr class="formset-row">
+          {% for hidden in ef.hidden_fields %}{{ hidden }}{% endfor %}
+          <td>{{ ef.employee_initials }}</td>
+          <td>{{ ef.task }}</td>
+          <td>{{ ef.time_to_complete_hours }}</td>
+          <td>{% if ef.instance.pk %}{{ ef.DELETE }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <button type="button" class="btn btn--small" data-add-row="employee">{% trans "Add row" %}</button>
+    <p class="text-secondary">{% trans "Total time" %}: <strong id="employee-total">0.00</strong> {% trans "hrs" %}</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>{% trans "Notes" %}</legend>
+    <div class="field">
+      <label for="{{ form.notes.id_for_label }}">{{ form.notes.label }}</label>
+      {{ form.notes }}
+    </div>
+  </fieldset>
+
+  <div class="row" style="flex:0 0 auto;">
+    <button type="submit" name="save" class="btn btn--primary">{% trans "Save draft" %}</button>
+    {% if record and record.is_open %}
+      <button type="submit" name="complete" class="btn" style="background:var(--color-success-bg); color:var(--color-success); border-color:var(--color-success);">
+        {% trans "Complete record" %}
+      </button>
+    {% endif %}
+    <a class="btn" href="{% url 'brc_forms:cooked_yield_list' %}">{% trans "Cancel" %}</a>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  "use strict";
+
+  function addRow(prefix, tableBodySelector) {
+    var totalInput = document.getElementById("id_" + prefix + "-TOTAL_FORMS");
+    var index = parseInt(totalInput.value, 10);
+    var tbody = document.querySelector(tableBodySelector);
+    var lastRow = tbody.querySelector(".formset-row:last-child");
+    var newRow = lastRow.cloneNode(true);
+    newRow.querySelectorAll("input, select").forEach(function (el) {
+      var name = el.getAttribute("name");
+      if (!name) return;
+      var newName = name.replace(prefix + "-" + (index - 1) + "-", prefix + "-" + index + "-");
+      el.setAttribute("name", newName);
+      el.setAttribute("id", "id_" + newName);
+      if (el.type === "checkbox") { el.checked = false; }
+      else { el.value = ""; }
+    });
+    tbody.appendChild(newRow);
+    totalInput.value = index + 1;
+  }
+
+  document.querySelectorAll("[data-add-row]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var kind = btn.getAttribute("data-add-row");
+      if (kind === "packaging") addRow("packaging_lines", "#packaging-table tbody");
+      if (kind === "employee") addRow("employee_tasks", "#employee-table tbody");
+    });
+  });
+
+  function recalcTotals() {
+    var pkgTotal = 0;
+    document.querySelectorAll('#packaging-table input[name$="-weight"]').forEach(function (el) {
+      pkgTotal += parseFloat(el.value) || 0;
+    });
+    document.getElementById("packaging-total").textContent = pkgTotal.toFixed(2);
+
+    var timeTotal = 0;
+    document.querySelectorAll('#employee-table input[name$="-time_to_complete_hours"]').forEach(function (el) {
+      timeTotal += parseFloat(el.value) || 0;
+    });
+    document.getElementById("employee-total").textContent = timeTotal.toFixed(2);
+  }
+
+  document.addEventListener("input", recalcTotals);
+  recalcTotals();
+})();
+</script>
+{% endblock %}

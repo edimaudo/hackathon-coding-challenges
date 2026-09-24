@@ -1,0 +1,1011 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-24 18:56-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#: accounts/forms.py:12 templates/accounts/user_list.html:19
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: accounts/forms.py:16
+msgid "Password"
+msgstr "Contraseña"
+
+#: accounts/forms.py:26
+msgid "Temporary password"
+msgstr "Contraseña temporal"
+
+#: accounts/forms.py:29
+msgid "Leave blank when editing to keep the current password."
+msgstr "Déjelo en blanco al editar para mantener la contraseña actual."
+
+#: accounts/forms.py:73
+#, python-format
+msgid ""
+"%(user)s already has a role on %(form)s. Edit that assignment instead of "
+"adding a new one."
+msgstr ""
+"%(user)s ya tiene un rol en %(form)s. Edite esa asignación en lugar de "
+"agregar una nueva."
+
+#: accounts/models.py:18 brc_forms/models.py:165
+msgid "initials"
+msgstr "iniciales"
+
+#: accounts/models.py:21
+msgid "Used to stamp entries on multi-user forms, e.g. 'JJS'."
+msgstr ""
+"Se usa para sellar entradas en formularios de varios usuarios, por ejemplo, "
+"'JJS'."
+
+#: accounts/models.py:24
+msgid "administrator"
+msgstr "administrador"
+
+#: accounts/models.py:26
+msgid "Can manage users and per-form role assignments and predefined values."
+msgstr ""
+"Puede administrar usuarios, asignaciones de roles por formulario y valores "
+"predefinidos."
+
+#: accounts/models.py:29
+msgid "must change password"
+msgstr "debe cambiar la contraseña"
+
+#: accounts/models.py:31
+msgid ""
+"Forces a password change on next login. Set automatically for new accounts."
+msgstr ""
+"Obliga a cambiar la contraseña en el próximo inicio de sesión. Se activa "
+"automáticamente para cuentas nuevas."
+
+#: accounts/models.py:50
+msgid "High"
+msgstr "Alta"
+
+#: accounts/models.py:51
+msgid "Medium"
+msgstr "Media"
+
+#: accounts/models.py:54
+msgid "code"
+msgstr "código"
+
+#: accounts/models.py:55
+msgid "name (English)"
+msgstr "nombre (inglés)"
+
+#: accounts/models.py:56
+msgid "name (Spanish)"
+msgstr "nombre (español)"
+
+#: accounts/models.py:88
+msgid "User (enters data)"
+msgstr "Usuario (captura datos)"
+
+#: accounts/models.py:89
+msgid "Supervisor (reviews & approves)"
+msgstr "Supervisor (revisa y aprueba)"
+
+#: accounts/models.py:90
+msgid "Auditor (read-only)"
+msgstr "Auditor (solo lectura)"
+
+#: accounts/views.py:37
+msgid "Password updated."
+msgstr "Contraseña actualizada."
+
+#: accounts/views.py:60
+#, python-format
+msgid "Account created for %(u)s."
+msgstr "Cuenta creada para %(u)s."
+
+#: accounts/views.py:74
+#, python-format
+msgid "Account updated for %(u)s."
+msgstr "Cuenta actualizada para %(u)s."
+
+#: accounts/views.py:87
+#, python-format
+msgid "%(u)s deactivated. Their historical records are unaffected."
+msgstr "%(u)s desactivado. Sus registros históricos no se ven afectados."
+
+#: accounts/views.py:104
+#, python-format
+msgid "%(u)s permanently deleted."
+msgstr "%(u)s eliminado de forma permanente."
+
+#: accounts/views.py:109
+#, python-format
+msgid ""
+"%(u)s has signed or reviewed existing BRC records, so deleting the account "
+"would break the audit trail. Use Deactivate instead."
+msgstr ""
+"%(u)s ha firmado o revisado registros BRC existentes, por lo que eliminar la"
+" cuenta rompería el rastro de auditoría. Use Desactivar en su lugar."
+
+#: accounts/views.py:123
+msgid "Role assignment saved."
+msgstr "Asignación de rol guardada."
+
+#: accounts/views.py:142
+msgid "Role assignment removed."
+msgstr "Asignación de rol eliminada."
+
+#: accounts/views.py:152
+msgid "Predefined value saved."
+msgstr "Valor predefinido guardado."
+
+#: brc_forms/forms.py:14
+msgid "— Select —"
+msgstr "— Seleccionar —"
+
+#: brc_forms/forms.py:43 templates/brc_forms/yield_log_detail.html:40
+#: templates/brc_forms/yield_log_print.html:25
+msgid "Date in hot room"
+msgstr "Fecha de entrada a sala caliente"
+
+#: brc_forms/forms.py:44 templates/brc_forms/yield_log_detail.html:41
+#: templates/brc_forms/yield_log_print.html:26
+msgid "Date out hot room"
+msgstr "Fecha de salida de sala caliente"
+
+#: brc_forms/forms.py:65 templates/brc_forms/yield_log_detail.html:25
+#: templates/brc_forms/yield_log_print.html:13
+msgid "Type of product"
+msgstr "Tipo de producto"
+
+#: brc_forms/forms.py:83
+msgid "Date packaged cannot be before the date out of the oven."
+msgstr ""
+"La fecha de empaque no puede ser anterior a la fecha de salida del horno."
+
+#: brc_forms/forms.py:108 templates/brc_forms/yield_log_detail.html:49
+#: templates/brc_forms/yield_log_form.html:73
+#: templates/brc_forms/yield_log_print.html:30
+msgid "Size"
+msgstr "Tamaño"
+
+#: brc_forms/forms.py:114
+msgid "Weight cannot be negative."
+msgstr "El peso no puede ser negativo."
+
+#: brc_forms/forms.py:127 templates/brc_forms/yield_log_detail.html:89
+#: templates/brc_forms/yield_log_form.html:127
+#: templates/brc_forms/yield_log_print.html:54
+msgid "Task"
+msgstr "Tarea"
+
+#: brc_forms/forms.py:142
+msgid "Supervisor note"
+msgstr "Nota del supervisor"
+
+#: brc_forms/forms.py:146
+msgid "From"
+msgstr "Desde"
+
+#: brc_forms/forms.py:147
+msgid "To"
+msgstr "Hasta"
+
+#: brc_forms/forms.py:148
+msgid "Lot number contains"
+msgstr "El número de lote contiene"
+
+#: brc_forms/forms.py:151
+msgid "Any status"
+msgstr "Cualquier estado"
+
+#: brc_forms/forms.py:152 brc_forms/models.py:23
+#: templates/core/dashboard.html:34
+msgid "Open"
+msgstr "Abierto"
+
+#: brc_forms/forms.py:152 brc_forms/models.py:24
+#: templates/brc_forms/yield_log_detail.html:122
+msgid "Completed"
+msgstr "Completado"
+
+#: brc_forms/forms.py:152 brc_forms/models.py:25
+#: templates/brc_forms/yield_log_detail.html:125
+msgid "Reviewed"
+msgstr "Revisado"
+
+#: brc_forms/models.py:36
+msgid "record date"
+msgstr "fecha del registro"
+
+#: brc_forms/models.py:101
+msgid "type of product"
+msgstr "tipo de producto"
+
+#: brc_forms/models.py:102
+msgid "raw lot number"
+msgstr "número de lote crudo"
+
+#: brc_forms/models.py:103
+msgid "finished lot number"
+msgstr "número de lote terminado"
+
+#: brc_forms/models.py:105
+msgid "date out of oven"
+msgstr "fecha de salida del horno"
+
+#: brc_forms/models.py:106
+msgid "date packaged"
+msgstr "fecha de empaque"
+
+#: brc_forms/models.py:108
+msgid "date in hot room"
+msgstr "fecha de entrada a sala caliente"
+
+#: brc_forms/models.py:109 brc_forms/models.py:111 brc_forms/models.py:154
+#: brc_forms/views.py:166 templates/brc_forms/yield_log_detail.html:40
+#: templates/brc_forms/yield_log_detail.html:41
+#: templates/brc_forms/yield_log_detail.html:54
+#: templates/brc_forms/yield_log_form.html:74
+#: templates/brc_forms/yield_log_print.html:25
+#: templates/brc_forms/yield_log_print.html:26
+#: templates/brc_forms/yield_log_print.html:34
+msgid "N/A"
+msgstr "N/A"
+
+#: brc_forms/models.py:110
+msgid "date out hot room"
+msgstr "fecha de salida de sala caliente"
+
+#: brc_forms/models.py:113
+msgid "combos used"
+msgstr "combos usados"
+
+#: brc_forms/models.py:114
+msgid "combo lids used"
+msgstr "tapas de combo usadas"
+
+#: brc_forms/models.py:115
+msgid "combo liners used"
+msgstr "forros de combo usados"
+
+#: brc_forms/models.py:116
+msgid "labels used"
+msgstr "etiquetas usadas"
+
+#: brc_forms/models.py:117
+msgid "boxes used"
+msgstr "cajas usadas"
+
+#: brc_forms/models.py:118
+msgid "box liners used"
+msgstr "forros de caja usados"
+
+#: brc_forms/models.py:120
+msgid "waste weight (lbs)"
+msgstr "peso de merma (lbs)"
+
+#: brc_forms/models.py:122
+msgid "yield %"
+msgstr "rendimiento %"
+
+#: brc_forms/models.py:123
+msgid "Entered/confirmed by the user; verified by the supervisor on review."
+msgstr ""
+"Ingresado/confirmado por el usuario; verificado por el supervisor durante la"
+" revisión."
+
+#: brc_forms/models.py:126
+msgid "notes"
+msgstr "notas"
+
+#: brc_forms/models.py:126
+msgid "Open narrative — anything not captured above."
+msgstr "Narrativa abierta — cualquier cosa no capturada arriba."
+
+#: brc_forms/models.py:131 templates/brc_forms/yield_log_detail.html:3
+#: templates/brc_forms/yield_log_form.html:3
+#: templates/brc_forms/yield_log_list.html:3
+#: templates/brc_forms/yield_log_list.html:6
+#: templates/brc_forms/yield_log_print.html:3
+#: templates/brc_forms/yield_log_print.html:11
+#: templates/brc_forms/yield_log_review.html:3
+msgid "Cooked Production Yield Log"
+msgstr "Registro de Rendimiento de Producción Cocida"
+
+#: brc_forms/models.py:132
+msgid "Cooked Production Yield Logs"
+msgstr "Registros de Rendimiento de Producción Cocida"
+
+#: brc_forms/models.py:150
+msgid "packaging description"
+msgstr "descripción del empaque"
+
+#: brc_forms/models.py:151
+msgid "size"
+msgstr "tamaño"
+
+#: brc_forms/models.py:152
+msgid "weight (lbs)"
+msgstr "peso (lbs)"
+
+#: brc_forms/models.py:153
+msgid "piece count"
+msgstr "conteo de piezas"
+
+#: brc_forms/models.py:166
+msgid "task"
+msgstr "tarea"
+
+#: brc_forms/models.py:167
+msgid "time to complete (hours)"
+msgstr "tiempo para completar (horas)"
+
+#: brc_forms/views.py:31
+msgid "You are not assigned a role on the Cooked Production Yield Log."
+msgstr ""
+"No tiene un rol asignado en el Registro de Rendimiento de Producción Cocida."
+
+#: brc_forms/views.py:65
+msgid "Only a User assigned to this form can create a new record."
+msgstr ""
+"Solo un Usuario asignado a este formulario puede crear un nuevo registro."
+
+#: brc_forms/views.py:78
+msgid "Record saved as OPEN. Complete it once all fields are ready."
+msgstr ""
+"Registro guardado como ABIERTO. Complételo cuando todos los campos estén "
+"listos."
+
+#: brc_forms/views.py:99
+msgid "Only a User assigned to this form can edit it."
+msgstr "Solo un Usuario asignado a este formulario puede editarlo."
+
+#: brc_forms/views.py:101
+#, python-format
+msgid "This record is %(status)s and can no longer be edited by a User."
+msgstr ""
+"Este registro está %(status)s y ya no puede ser editado por un Usuario."
+
+#: brc_forms/views.py:115
+msgid "Record marked COMPLETED and stamped with your name and today's date."
+msgstr ""
+"Registro marcado como COMPLETADO y sellado con su nombre y la fecha de hoy."
+
+#: brc_forms/views.py:117
+msgid "Draft saved."
+msgstr "Borrador guardado."
+
+#: brc_forms/views.py:156 templates/brc_forms/yield_log_detail.html:46
+#: templates/brc_forms/yield_log_form.html:68
+msgid "Packaging"
+msgstr "Empaque"
+
+#: brc_forms/views.py:160 templates/brc_forms/yield_log_detail.html:86
+#: templates/brc_forms/yield_log_form.html:122
+msgid "Employees & tasks"
+msgstr "Empleados y tareas"
+
+#: brc_forms/views.py:180
+msgid "Only a Supervisor assigned to this form can review it."
+msgstr "Solo un Supervisor asignado a este formulario puede revisarlo."
+
+#: brc_forms/views.py:182
+msgid "This record is still OPEN — it has not been completed by a User yet."
+msgstr "Este registro sigue ABIERTO — un Usuario aún no lo ha completado."
+
+#: brc_forms/views.py:201
+msgid "Record marked REVIEWED and stamped with your name and today's date."
+msgstr ""
+"Registro marcado como REVISADO y sellado con su nombre y la fecha de hoy."
+
+#: brc_forms/views.py:203
+msgid "Notes saved."
+msgstr "Notas guardadas."
+
+#: templates/accounts/force_password_change.html:3
+#: templates/accounts/force_password_change.html:6
+msgid "Set your password"
+msgstr "Establezca su contraseña"
+
+#: templates/accounts/force_password_change.html:7
+msgid ""
+"You're signed in with a default password. Choose a private password before "
+"continuing."
+msgstr ""
+"Ha iniciado sesión con una contraseña predeterminada. Elija una contraseña "
+"privada antes de continuar."
+
+#: templates/accounts/force_password_change.html:18
+msgid "Save password"
+msgstr "Guardar contraseña"
+
+#: templates/accounts/login.html:3 templates/accounts/login.html:6
+#: templates/accounts/login.html:24
+msgid "Sign in"
+msgstr "Iniciar sesión"
+
+#: templates/accounts/login.html:7
+msgid "BRC Quality Records System"
+msgstr "Sistema de Registros de Calidad BRC"
+
+#: templates/accounts/predefined_values.html:3
+#: templates/accounts/user_list.html:9
+msgid "Predefined values"
+msgstr "Valores predefinidos"
+
+#: templates/accounts/predefined_values.html:5
+msgid "Predefined dropdown values"
+msgstr "Valores predefinidos de lista desplegable"
+
+#: templates/accounts/predefined_values.html:6
+msgid ""
+"Add new options for a form's dropdown fields, or deactivate ones no longer "
+"used (deactivating keeps historical records intact)."
+msgstr ""
+"Agregue nuevas opciones para las listas desplegables de un formulario, o "
+"desactive las que ya no se usan (desactivar mantiene intactos los registros "
+"históricos)."
+
+#: templates/accounts/predefined_values.html:19
+msgid "Add value"
+msgstr "Agregar valor"
+
+#: templates/accounts/predefined_values.html:26
+#: templates/accounts/role_matrix.html:26
+msgid "Form"
+msgstr "Formulario"
+
+#: templates/accounts/predefined_values.html:26
+msgid "Field"
+msgstr "Campo"
+
+#: templates/accounts/predefined_values.html:26
+msgid "Value (EN)"
+msgstr "Valor (EN)"
+
+#: templates/accounts/predefined_values.html:26
+msgid "Value (ES)"
+msgstr "Valor (ES)"
+
+#: templates/accounts/predefined_values.html:26
+#: templates/accounts/role_matrix.html:26 templates/accounts/user_list.html:20
+#: templates/accounts/user_list.html:30
+msgid "Active"
+msgstr "Activo"
+
+#: templates/accounts/predefined_values.html:34
+#: templates/accounts/role_matrix.html:33 templates/accounts/user_list.html:29
+msgid "Yes"
+msgstr "Sí"
+
+#: templates/accounts/predefined_values.html:34
+#: templates/accounts/role_matrix.html:33 templates/accounts/user_list.html:29
+msgid "No"
+msgstr "No"
+
+#: templates/accounts/predefined_values.html:39
+#: templates/accounts/user_list.html:35
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: templates/accounts/predefined_values.html:39
+msgid "Activate"
+msgstr "Activar"
+
+#: templates/accounts/role_matrix.html:3 templates/accounts/role_matrix.html:5
+#: templates/accounts/user_list.html:8
+msgid "Form roles"
+msgstr "Roles por formulario"
+
+#: templates/accounts/role_matrix.html:6
+msgid ""
+"A person can hold at most one role on any given form — User, Supervisor, or "
+"Auditor — but different roles on different forms."
+msgstr ""
+"Una persona puede tener como máximo un rol en cualquier formulario dado — "
+"Usuario, Supervisor o Auditor — pero roles distintos en formularios "
+"distintos."
+
+#: templates/accounts/role_matrix.html:9
+msgid "Add / update an assignment"
+msgstr "Agregar / actualizar una asignación"
+
+#: templates/accounts/role_matrix.html:19
+msgid "Save assignment"
+msgstr "Guardar asignación"
+
+#: templates/accounts/role_matrix.html:26
+msgid "Person"
+msgstr "Persona"
+
+#: templates/accounts/role_matrix.html:26
+msgid "Role"
+msgstr "Rol"
+
+#: templates/accounts/role_matrix.html:36
+#: templates/brc_forms/yield_log_form.html:74
+#: templates/brc_forms/yield_log_form.html:127
+msgid "Remove"
+msgstr "Quitar"
+
+#: templates/accounts/user_form.html:3 templates/accounts/user_form.html:5
+#: templates/accounts/user_list.html:10
+msgid "New user"
+msgstr "Nuevo usuario"
+
+#: templates/accounts/user_form.html:3 templates/accounts/user_form.html:5
+msgid "Edit user"
+msgstr "Editar usuario"
+
+#: templates/accounts/user_form.html:17
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/accounts/user_form.html:18
+#: templates/brc_forms/yield_log_form.html:161
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/accounts/user_list.html:3 templates/accounts/user_list.html:6
+#: templates/core/dashboard.html:10
+msgid "Manage users"
+msgstr "Administrar usuarios"
+
+#: templates/accounts/user_list.html:19
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/accounts/user_list.html:19
+#: templates/brc_forms/yield_log_detail.html:89
+#: templates/brc_forms/yield_log_form.html:127
+#: templates/brc_forms/yield_log_print.html:54
+msgid "Initials"
+msgstr "Iniciales"
+
+#: templates/accounts/user_list.html:20
+msgid "Administrator"
+msgstr "Administrador"
+
+#: templates/accounts/user_list.html:30
+msgid "Inactive"
+msgstr "Inactivo"
+
+#: templates/accounts/user_list.html:32
+#: templates/brc_forms/yield_log_detail.html:9
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/accounts/user_list.html:39
+msgid "Permanently delete this account? This cannot be undone."
+msgstr ""
+"¿Eliminar esta cuenta de forma permanente? Esta acción no se puede deshacer."
+
+#: templates/accounts/user_list.html:40
+msgid "Delete"
+msgstr "Eliminar"
+
+#: templates/base.html:7 templates/base.html:14
+msgid "BRC Quality Records"
+msgstr "Registros de Calidad BRC"
+
+#: templates/base.html:11
+msgid "Skip to main content"
+msgstr "Saltar al contenido principal"
+
+#: templates/base.html:18
+msgid "Text size"
+msgstr "Tamaño del texto"
+
+#: templates/base.html:19
+msgid "Small text"
+msgstr "Texto pequeño"
+
+#: templates/base.html:20
+#, fuzzy
+#| msgid "Medium"
+msgid "Medium text"
+msgstr "Media"
+
+#: templates/base.html:21
+msgid "Large text"
+msgstr "Texto grande"
+
+#: templates/base.html:24
+msgid "Color theme"
+msgstr "Tema de color"
+
+#: templates/base.html:25
+msgid "Light"
+msgstr "Claro"
+
+#: templates/base.html:26
+msgid "Dark"
+msgstr "Oscuro"
+
+#: templates/base.html:32 templates/base.html:33
+msgid "Language"
+msgstr "Idioma"
+
+#: templates/base.html:45
+msgid "Admin"
+msgstr "Administración"
+
+#: templates/base.html:49
+msgid "Log out"
+msgstr "Cerrar sesión"
+
+#: templates/brc_forms/yield_log_detail.html:6
+msgid "Record"
+msgstr "Registro"
+
+#: templates/brc_forms/yield_log_detail.html:12
+#: templates/brc_forms/yield_log_review.html:3
+msgid "Review"
+msgstr "Revisar"
+
+#: templates/brc_forms/yield_log_detail.html:14
+#: templates/brc_forms/yield_log_print.html:3
+#: templates/brc_forms/yield_log_print.html:6
+msgid "Print"
+msgstr "Imprimir"
+
+#: templates/brc_forms/yield_log_detail.html:15
+msgid "Back to list"
+msgstr "Volver a la lista"
+
+#: templates/brc_forms/yield_log_detail.html:22
+#: templates/brc_forms/yield_log_form.html:12
+msgid "Product & lot identification"
+msgstr "Identificación de producto y lote"
+
+#: templates/brc_forms/yield_log_detail.html:24
+#: templates/brc_forms/yield_log_list.html:41
+#: templates/brc_forms/yield_log_print.html:14
+msgid "Record date"
+msgstr "Fecha del registro"
+
+#: templates/brc_forms/yield_log_detail.html:28
+#: templates/brc_forms/yield_log_print.html:17
+msgid "Raw lot number"
+msgstr "Número de lote crudo"
+
+#: templates/brc_forms/yield_log_detail.html:29
+#: templates/brc_forms/yield_log_print.html:18
+msgid "Finished lot number"
+msgstr "Número de lote terminado"
+
+#: templates/brc_forms/yield_log_detail.html:34
+#: templates/brc_forms/yield_log_form.html:37
+msgid "Dates"
+msgstr "Fechas"
+
+#: templates/brc_forms/yield_log_detail.html:36
+#: templates/brc_forms/yield_log_print.html:21
+msgid "Date out of oven"
+msgstr "Fecha de salida del horno"
+
+#: templates/brc_forms/yield_log_detail.html:37
+#: templates/brc_forms/yield_log_print.html:22
+msgid "Date packaged"
+msgstr "Fecha de empaque"
+
+#: templates/brc_forms/yield_log_detail.html:49
+#: templates/brc_forms/yield_log_form.html:73
+#: templates/brc_forms/yield_log_print.html:30
+msgid "Packaging description"
+msgstr "Descripción del empaque"
+
+#: templates/brc_forms/yield_log_detail.html:49
+#: templates/brc_forms/yield_log_form.html:74
+#: templates/brc_forms/yield_log_print.html:30
+msgid "Weight (lbs)"
+msgstr "Peso (lbs)"
+
+#: templates/brc_forms/yield_log_detail.html:49
+#: templates/brc_forms/yield_log_form.html:74
+#: templates/brc_forms/yield_log_print.html:30
+msgid "Piece count"
+msgstr "Conteo de piezas"
+
+#: templates/brc_forms/yield_log_detail.html:64
+#: templates/brc_forms/yield_log_form.html:96
+msgid "Consumables used"
+msgstr "Consumibles usados"
+
+#: templates/brc_forms/yield_log_detail.html:66
+msgid "Combos used"
+msgstr "Combos usados"
+
+#: templates/brc_forms/yield_log_detail.html:67
+msgid "Combo lids used"
+msgstr "Tapas de combo usadas"
+
+#: templates/brc_forms/yield_log_detail.html:68
+msgid "Combo liners used"
+msgstr "Forros de combo usados"
+
+#: templates/brc_forms/yield_log_detail.html:71
+msgid "Labels used"
+msgstr "Etiquetas usadas"
+
+#: templates/brc_forms/yield_log_detail.html:72
+msgid "Boxes used"
+msgstr "Cajas usadas"
+
+#: templates/brc_forms/yield_log_detail.html:73
+msgid "Box liners used"
+msgstr "Forros de caja usados"
+
+#: templates/brc_forms/yield_log_detail.html:78
+#: templates/brc_forms/yield_log_form.html:110
+msgid "Waste & yield"
+msgstr "Merma y rendimiento"
+
+#: templates/brc_forms/yield_log_detail.html:80
+msgid "Waste weight (lbs)"
+msgstr "Peso de merma (lbs)"
+
+#: templates/brc_forms/yield_log_detail.html:81
+#: templates/brc_forms/yield_log_print.html:50
+#, python-format
+msgid "Yield %%"
+msgstr "Rendimiento %%"
+
+#: templates/brc_forms/yield_log_detail.html:89
+#: templates/brc_forms/yield_log_form.html:127
+msgid "Time to complete (hrs)"
+msgstr "Tiempo para completar (hrs)"
+
+#: templates/brc_forms/yield_log_detail.html:94
+#: templates/brc_forms/yield_log_form.html:143
+#: templates/brc_forms/yield_log_print.html:59
+msgid "Total time"
+msgstr "Tiempo total"
+
+#: templates/brc_forms/yield_log_detail.html:102
+#: templates/brc_forms/yield_log_form.html:147
+msgid "Notes"
+msgstr "Notas"
+
+#: templates/brc_forms/yield_log_detail.html:109
+msgid "Supervisor notes"
+msgstr "Notas del supervisor"
+
+#: templates/brc_forms/yield_log_detail.html:120
+msgid "Sign-off trail"
+msgstr "Registro de firmas"
+
+#: templates/brc_forms/yield_log_detail.html:121
+msgid "Created"
+msgstr "Creado"
+
+#: templates/brc_forms/yield_log_detail.html:123
+msgid "Not yet completed"
+msgstr "Aún no completado"
+
+#: templates/brc_forms/yield_log_detail.html:126
+msgid "Not yet reviewed"
+msgstr "Aún no revisado"
+
+#: templates/brc_forms/yield_log_form.html:5
+msgid "Edit record"
+msgstr "Editar registro"
+
+#: templates/brc_forms/yield_log_form.html:5
+#: templates/brc_forms/yield_log_list.html:8
+msgid "New record"
+msgstr "Nuevo registro"
+
+#: templates/brc_forms/yield_log_form.html:56
+msgid "Check N/A if this batch didn't use the hot room."
+msgstr "Marque N/A si este lote no usó la sala caliente."
+
+#: templates/brc_forms/yield_log_form.html:91
+#: templates/brc_forms/yield_log_form.html:142
+msgid "Add row"
+msgstr "Agregar fila"
+
+#: templates/brc_forms/yield_log_form.html:92
+msgid "Total finished weight"
+msgstr "Peso total terminado"
+
+#: templates/brc_forms/yield_log_form.html:116
+msgid "Optional at entry time — confirmed during supervisor review."
+msgstr ""
+"Opcional al momento de la captura — se confirma durante la revisión del "
+"supervisor."
+
+#: templates/brc_forms/yield_log_form.html:143
+msgid "hrs"
+msgstr "hrs"
+
+#: templates/brc_forms/yield_log_form.html:155
+msgid "Save draft"
+msgstr "Guardar borrador"
+
+#: templates/brc_forms/yield_log_form.html:158
+msgid "Complete record"
+msgstr "Completar registro"
+
+#: templates/brc_forms/yield_log_list.html:31
+msgid "Search"
+msgstr "Buscar"
+
+#: templates/brc_forms/yield_log_list.html:32
+msgid "Clear"
+msgstr "Borrar filtros"
+
+#: templates/brc_forms/yield_log_list.html:40
+msgid "Select"
+msgstr "Seleccionar"
+
+#: templates/brc_forms/yield_log_list.html:41
+msgid "Finished lot #"
+msgstr "Lote terminado n.°"
+
+#: templates/brc_forms/yield_log_list.html:42
+msgid "Status"
+msgstr "Estado"
+
+#: templates/brc_forms/yield_log_list.html:42
+msgid "Created by"
+msgstr "Creado por"
+
+#: templates/brc_forms/yield_log_list.html:48
+msgid "Select record for printing"
+msgstr "Seleccionar registro para imprimir"
+
+#: templates/brc_forms/yield_log_list.html:53
+msgid "View"
+msgstr "Ver"
+
+#: templates/brc_forms/yield_log_list.html:56
+msgid "No records match your search."
+msgstr "Ningún registro coincide con su búsqueda."
+
+#: templates/brc_forms/yield_log_list.html:62
+msgid "Print selected"
+msgstr "Imprimir seleccionados"
+
+#: templates/brc_forms/yield_log_print.html:36
+msgid "Total"
+msgstr "Total"
+
+#: templates/brc_forms/yield_log_print.html:41
+msgid "Combos"
+msgstr "Combos"
+
+#: templates/brc_forms/yield_log_print.html:42
+msgid "Lids"
+msgstr "Tapas"
+
+#: templates/brc_forms/yield_log_print.html:43
+msgid "Liners"
+msgstr "Forros"
+
+#: templates/brc_forms/yield_log_print.html:44
+msgid "Labels"
+msgstr "Etiquetas"
+
+#: templates/brc_forms/yield_log_print.html:45
+msgid "Boxes"
+msgstr "Cajas"
+
+#: templates/brc_forms/yield_log_print.html:46
+msgid "Box liners"
+msgstr "Forros de caja"
+
+#: templates/brc_forms/yield_log_print.html:49
+msgid "Waste weight"
+msgstr "Peso de merma"
+
+#: templates/brc_forms/yield_log_print.html:54
+msgid "Time (hrs)"
+msgstr "Tiempo (hrs)"
+
+#: templates/brc_forms/yield_log_print.html:64
+msgid "Production (completed by)"
+msgstr "Producción (completado por)"
+
+#: templates/brc_forms/yield_log_print.html:66
+msgid "QA (reviewed by)"
+msgstr "Control de Calidad (revisado por)"
+
+#: templates/brc_forms/yield_log_review.html:5
+msgid "Review record"
+msgstr "Revisar registro"
+
+#: templates/brc_forms/yield_log_review.html:8
+msgid ""
+"You can add a note to any field below. Original entries cannot be changed — "
+"if something is wrong, note it here and ask the User to correct it before "
+"you approve."
+msgstr ""
+"Puede agregar una nota a cualquier campo a continuación. Las entradas "
+"originales no se pueden cambiar — si algo está mal, anótelo aquí y pida al "
+"Usuario que lo corrija antes de aprobar."
+
+#: templates/brc_forms/yield_log_review.html:25
+msgid "Add a note (optional)"
+msgstr "Agregar una nota (opcional)"
+
+#: templates/brc_forms/yield_log_review.html:33
+msgid "Save notes"
+msgstr "Guardar notas"
+
+#: templates/brc_forms/yield_log_review.html:37
+msgid ""
+"Mark this record REVIEWED? This stamps it with your name and date and "
+"finalizes it."
+msgstr ""
+"¿Marcar este registro como REVISADO? Esto lo sella con su nombre y fecha y "
+"lo finaliza."
+
+#: templates/brc_forms/yield_log_review.html:38
+msgid "Mark reviewed"
+msgstr "Marcar como revisado"
+
+#: templates/brc_forms/yield_log_review.html:41
+msgid "Back"
+msgstr "Atrás"
+
+#: templates/core/dashboard.html:3
+msgid "Dashboard"
+msgstr "Panel principal"
+
+#: templates/core/dashboard.html:5
+msgid "Your forms"
+msgstr "Sus formularios"
+
+#: templates/core/dashboard.html:9
+msgid "You're signed in as an Administrator."
+msgstr "Ha iniciado sesión como Administrador."
+
+#: templates/core/dashboard.html:11
+msgid "Manage form roles"
+msgstr "Administrar roles de formularios"
+
+#: templates/core/dashboard.html:12
+msgid "Manage predefined values"
+msgstr "Administrar valores predefinidos"
+
+#: templates/core/dashboard.html:17
+msgid ""
+"You don't have a role on any form yet. Ask an administrator to assign you "
+"one."
+msgstr ""
+"Aún no tiene un rol asignado en ningún formulario. Pida a un administrador "
+"que le asigne uno."
+
+#: templates/core/dashboard.html:26
+msgid "Your role: User"
+msgstr "Su rol: Usuario"
+
+#: templates/core/dashboard.html:27
+msgid "Your role: Supervisor"
+msgstr "Su rol: Supervisor"
+
+#: templates/core/dashboard.html:28
+msgid "Your role: Auditor"
+msgstr "Su rol: Auditor"
+
+#: templates/core/dashboard.html:29
+msgid "Administrator access"
+msgstr "Acceso de administrador"
+
+#: templates/core/dashboard.html:36
+msgid "Data-entry screens coming soon"
+msgstr "Pantallas de captura de datos próximamente"

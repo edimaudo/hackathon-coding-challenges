@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Cooked Production Yield Log" %} #{{ record.id }}{% endblock %}
+{% block content %}
+<div class="row" style="align-items:center;">
+  <h1 class="mt-0">{% trans "Record" %} #{{ record.id }}</h1>
+  <div style="flex:0 0 auto;" class="no-print">
+    {% if record.is_open %}
+      <a class="btn btn--primary" href="{% url 'brc_forms:yield_log_edit' record.id %}">{% trans "Edit" %}</a>
+    {% endif %}
+    {% if can_review and record.status != "OPEN" %}
+      <a class="btn btn--primary" href="{% url 'brc_forms:yield_log_review' record.id %}">{% trans "Review" %}</a>
+    {% endif %}
+    <a class="btn" href="{% url 'brc_forms:yield_log_print' record.id %}" target="_blank">{% trans "Print" %}</a>
+    <a class="btn" href="{% url 'brc_forms:cooked_yield_list' %}">{% trans "Back to list" %}</a>
+  </div>
+</div>
+
+<p><span class="status-pill status-pill--{{ record.status }}">{{ record.get_status_display }}</span></p>
+
+<div class="card">
+  <h2>{% trans "Product & lot identification" %}</h2>
+  <div class="row">
+    <p><strong>{% trans "Record date" %}:</strong> {{ record.record_date }}</p>
+    <p><strong>{% trans "Type of product" %}:</strong> {{ record.type_of_product }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Raw lot number" %}:</strong> {{ record.raw_lot_number }}</p>
+    <p><strong>{% trans "Finished lot number" %}:</strong> {{ record.finished_lot_number }}</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{% trans "Dates" %}</h2>
+  <div class="row">
+    <p><strong>{% trans "Date out of oven" %}:</strong> {{ record.date_out_of_oven }}</p>
+    <p><strong>{% trans "Date packaged" %}:</strong> {{ record.date_packaged }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Date in hot room" %}:</strong> {% if record.date_in_hot_room_na %}{% trans "N/A" %}{% else %}{{ record.date_in_hot_room }}{% endif %}</p>
+    <p><strong>{% trans "Date out hot room" %}:</strong> {% if record.date_out_hot_room_na %}{% trans "N/A" %}{% else %}{{ record.date_out_hot_room }}{% endif %}</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{% trans "Packaging" %}</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{% trans "Packaging description" %}</th><th>{% trans "Size" %}</th><th>{% trans "Weight (lbs)" %}</th><th>{% trans "Piece count" %}</th></tr></thead>
+    <tbody>
+      {% for line in record.packaging_lines.all %}
+      <tr>
+        <td>{{ line.lot_description }}</td><td>{{ line.size_description }}</td><td>{{ line.weight }}</td>
+        <td>{% if line.piece_count_na %}{% trans "N/A" %}{% else %}{{ line.piece_count }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+      <tr><td colspan="2"></td><td><strong>{{ record.total_finished_weight }}</strong></td><td></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{% trans "Consumables used" %}</h2>
+  <div class="row">
+    <p><strong>{% trans "Combos used" %}:</strong> {{ record.combos_used }}</p>
+    <p><strong>{% trans "Combo lids used" %}:</strong> {{ record.combo_lids_used }}</p>
+    <p><strong>{% trans "Combo liners used" %}:</strong> {{ record.combo_liners_used }}</p>
+  </div>
+  <div class="row">
+    <p><strong>{% trans "Labels used" %}:</strong> {{ record.labels_used }}</p>
+    <p><strong>{% trans "Boxes used" %}:</strong> {{ record.boxes_used }}</p>
+    <p><strong>{% trans "Box liners used" %}:</strong> {{ record.box_liners_used }}</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{% trans "Waste & yield" %}</h2>
+  <div class="row">
+    <p><strong>{% trans "Waste weight (lbs)" %}:</strong> {{ record.waste_weight_lbs }}</p>
+    <p><strong>{% trans "Yield %" %}:</strong> {{ record.yield_percent|default:"—" }}</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>{% trans "Employees & tasks" %}</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{% trans "Initials" %}</th><th>{% trans "Task" %}</th><th>{% trans "Time to complete (hrs)" %}</th></tr></thead>
+    <tbody>
+      {% for line in record.employee_tasks.all %}
+      <tr><td>{{ line.employee_initials }}</td><td>{{ line.task }}</td><td>{{ line.time_to_complete_hours }}</td></tr>
+      {% endfor %}
+      <tr><td colspan="2">{% trans "Total time" %}</td><td><strong>{{ record.total_time_hours }}</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+{% if record.notes %}
+<div class="card">
+  <h2>{% trans "Notes" %}</h2>
+  <p>{{ record.notes|linebreaksbr }}</p>
+</div>
+{% endif %}
+
+{% if notes_by_field %}
+<div class="card">
+  <h2>{% trans "Supervisor notes" %}</h2>
+  {% for field_name, notes in notes_by_field.items %}
+    <p><strong>{{ field_name }}</strong></p>
+    {% for note in notes %}
+      <div class="note-box">{{ note.note_text }} — <span class="text-secondary">{{ note.created_by }}, {{ note.created_at|date:"SHORT_DATETIME_FORMAT" }}</span></div>
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="card">
+  <h2>{% trans "Sign-off trail" %}</h2>
+  <p><strong>{% trans "Created" %}:</strong> {{ record.created_by }}, {{ record.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
+  <p><strong>{% trans "Completed" %}:</strong>
+    {% if record.completed_by %}{{ record.completed_by }}, {{ record.completed_at|date:"SHORT_DATETIME_FORMAT" }}{% else %}<span class="text-secondary">{% trans "Not yet completed" %}</span>{% endif %}
+  </p>
+  <p><strong>{% trans "Reviewed" %}:</strong>
+    {% if record.reviewed_by %}{{ record.reviewed_by }}, {{ record.reviewed_at|date:"SHORT_DATETIME_FORMAT" }}{% else %}<span class="text-secondary">{% trans "Not yet reviewed" %}</span>{% endif %}
+  </p>
+</div>
+{% endblock %}

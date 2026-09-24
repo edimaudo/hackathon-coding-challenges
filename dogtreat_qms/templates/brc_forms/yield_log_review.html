@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n qms_extras %}
+{% block title %}{% trans "Review" %} — {% trans "Cooked Production Yield Log" %} #{{ record.id }}{% endblock %}
+{% block content %}
+<h1>{% trans "Review record" %} #{{ record.id }}</h1>
+<p><span class="status-pill status-pill--{{ record.status }}">{{ record.get_status_display }}</span></p>
+<p class="text-secondary">
+  {% trans "You can add a note to any field below. Original entries cannot be changed — if something is wrong, note it here and ask the User to correct it before you approve." %}
+</p>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+
+  {% for field_name, label in field_labels %}
+  <div class="card">
+    <div class="row" style="align-items:flex-start;">
+      <div>
+        <h3 class="mt-0">{{ label }}</h3>
+        <p>{{ field_values|dict_get:field_name }}</p>
+        {% for note in notes_by_field|dict_get:field_name %}
+          <div class="note-box">{{ note.note_text }} — <span class="text-secondary">{{ note.created_by }}, {{ note.created_at|date:"SHORT_DATETIME_FORMAT" }}</span></div>
+        {% endfor %}
+      </div>
+      <div style="flex:1; min-width:240px;">
+        <label for="note-{{ field_name }}">{% trans "Add a note (optional)" %}</label>
+        <textarea id="note-{{ field_name }}" name="note__{{ field_name }}" rows="2"></textarea>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="row" style="flex:0 0 auto;">
+    <button type="submit" class="btn btn--primary">{% trans "Save notes" %}</button>
+    {% if record.status == "COMPLETED" %}
+      <button type="submit" name="mark_reviewed" value="1" class="btn"
+              style="background:var(--color-success-bg); color:var(--color-success); border-color:var(--color-success);"
+              onclick="return confirm('{% trans "Mark this record REVIEWED? This stamps it with your name and date and finalizes it." %}');">
+        {% trans "Mark reviewed" %}
+      </button>
+    {% endif %}
+    <a class="btn" href="{% url 'brc_forms:yield_log_detail' record.id %}">{% trans "Back" %}</a>
+  </div>
+</form>
+{% endblock %}

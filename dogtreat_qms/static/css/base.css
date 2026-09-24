@@ -1,0 +1,244 @@
+/* ---------------------------------------------------------------------
+   Fonts — self-hosted Inter (no external CDN calls from an internal
+   food-safety network that may not have open internet access)
+--------------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-500-normal.woff2") format("woff2");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-600-normal.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter-latin-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* ---------------------------------------------------------------------
+   Design tokens
+   Palette follows Apple's Human Interface Guidelines: a near-black/near-
+   white text pair, a single blue accent for actions & focus, a neutral
+   gray scale for surfaces, and semantic colors reserved for the record
+   status pill (OPEN / COMPLETED / REVIEWED) rather than decoration.
+--------------------------------------------------------------------- */
+:root {
+  --font-scale: 1;              /* overridden to .9 / 1 / 1.125 by body[data-font-scale] */
+  --color-bg: #F5F5F7;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FFFFFF;
+  --color-text: #1D1D1F;
+  --color-text-secondary: #6E6E73;
+  --color-border: #D2D2D7;
+  --color-accent: #0071E3;
+  --color-accent-text: #FFFFFF;
+  --color-success: #1E8E3E;
+  --color-success-bg: #E6F4EA;
+  --color-warning: #96650A;
+  --color-warning-bg: #FBF0DB;
+  --color-danger: #D70015;
+  --color-danger-bg: #FCE8E8;
+  --focus-ring: 0 0 0 3px rgba(0, 113, 227, 0.45);
+  --radius: 12px;
+  --radius-sm: 8px;
+  color-scheme: light;
+}
+
+body[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-surface: #1C1C1E;
+  --color-surface-raised: #2C2C2E;
+  --color-text: #F5F5F7;
+  --color-text-secondary: #98989D;
+  --color-border: #38383A;
+  --color-accent: #0A84FF;
+  --color-accent-text: #FFFFFF;
+  --color-success: #32D74B;
+  --color-success-bg: #10371A;
+  --color-warning: #FFD60A;
+  --color-warning-bg: #3A2E05;
+  --color-danger: #FF453A;
+  --color-danger-bg: #3A0F0F;
+  --focus-ring: 0 0 0 3px rgba(10, 132, 255, 0.55);
+}
+
+body[data-font-scale="small"] { --font-scale: 0.9; }
+body[data-font-scale="medium"] { --font-scale: 1; }
+body[data-font-scale="large"] { --font-scale: 1.125; }
+
+html { font-size: calc(16px * var(--font-scale)); scroll-behavior: smooth; }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; margin: 0 0 0.5em; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.375rem; }
+h3 { font-size: 1.125rem; }
+p { margin: 0 0 1em; }
+
+a { color: var(--color-accent); }
+
+/* Visible keyboard focus everywhere — required for WCAG 2.4.7 */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 1000;
+  background: var(--color-accent); color: var(--color-accent-text);
+  padding: 0.75em 1em; border-radius: 0 0 var(--radius-sm) 0;
+}
+.skip-link:focus { left: 0; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------------------------------------------------------------------
+   App shell
+--------------------------------------------------------------------- */
+.app-bar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.app-bar__brand { font-weight: 700; font-size: 1.0625rem; color: var(--color-text); text-decoration: none; }
+.app-bar__spacer { flex: 1; }
+.app-bar__controls { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ---------------------------------------------------------------------
+   Buttons & form controls — 44px minimum hit target (Apple HIG)
+--------------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.4em;
+  min-height: 44px;
+  padding: 0.55em 1.1em;
+  font: inherit; font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn:hover { filter: brightness(0.97); }
+body[data-theme="dark"] .btn:hover { filter: brightness(1.15); }
+.btn--primary { background: var(--color-accent); color: var(--color-accent-text); border-color: var(--color-accent); }
+.btn--danger { background: var(--color-danger-bg); color: var(--color-danger); border-color: var(--color-danger); }
+.btn--small { min-height: 36px; padding: 0.35em 0.8em; font-size: 0.9rem; }
+.btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+.toggle-group { display: inline-flex; border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
+.toggle-group button {
+  min-height: 36px; padding: 0 0.7em; font: inherit; font-size: 0.85rem;
+  border: none; background: var(--color-surface); color: var(--color-text-secondary); cursor: pointer;
+  border-right: 1px solid var(--color-border);
+}
+.toggle-group button:last-child { border-right: none; }
+.toggle-group button[aria-pressed="true"] { background: var(--color-accent); color: var(--color-accent-text); }
+
+label { display: block; font-weight: 500; margin-bottom: 0.3em; }
+.field { margin-bottom: 1rem; }
+.field .help-text { display: block; color: var(--color-text-secondary); font-size: 0.85rem; margin-top: 0.25em; }
+.field .errorlist { list-style: none; margin: 0.3em 0 0; padding: 0; color: var(--color-danger); font-size: 0.9rem; }
+
+input[type="text"], input[type="date"], input[type="number"], input[type="password"],
+input[type="email"], select, textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.55em 0.7em;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+textarea { min-height: 5.5em; }
+input[type="checkbox"] { width: 1.2em; height: 1.2em; }
+
+fieldset { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 1rem; margin: 0 0 1.25rem; }
+legend { font-weight: 600; padding: 0 0.4em; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.6em 0.6em; border-bottom: 1px solid var(--color-border); }
+th { color: var(--color-text-secondary); font-weight: 600; font-size: 0.85rem; }
+.table-wrap { overflow-x: auto; } /* wide data tables scroll instead of the page */
+
+/* ---------------------------------------------------------------------
+   Status pill
+--------------------------------------------------------------------- */
+.status-pill {
+  display: inline-flex; align-items: center; gap: 0.4em;
+  padding: 0.25em 0.75em; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+}
+.status-pill--OPEN { background: var(--color-warning-bg); color: var(--color-warning); }
+.status-pill--COMPLETED { background: rgba(0,113,227,0.12); color: var(--color-accent); }
+.status-pill--REVIEWED { background: var(--color-success-bg); color: var(--color-success); }
+
+.note-box { background: var(--color-warning-bg); border: 1px solid var(--color-warning); border-radius: var(--radius-sm); padding: 0.6em 0.8em; margin-top: 0.4em; font-size: 0.9rem; }
+
+.messages { list-style: none; padding: 0; margin: 0 0 1.25rem; }
+.messages li { padding: 0.7em 1em; border-radius: var(--radius-sm); margin-bottom: 0.5em; border: 1px solid var(--color-border); }
+.messages .success { background: var(--color-success-bg); color: var(--color-success); border-color: var(--color-success); }
+.messages .warning { background: var(--color-warning-bg); color: var(--color-warning); border-color: var(--color-warning); }
+.messages .error { background: var(--color-danger-bg); color: var(--color-danger); border-color: var(--color-danger); }
+
+.stack { display: flex; flex-direction: column; gap: 0.75rem; }
+.row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.row > * { flex: 1; min-width: 200px; }
+.text-secondary { color: var(--color-text-secondary); }
+.mt-0 { margin-top: 0; }
+
+/* ---------------------------------------------------------------------
+   Print — records must be printable per the "Retrieval" requirement
+--------------------------------------------------------------------- */
+@media print {
+  .app-bar, .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  .card { border-color: #000; break-inside: avoid; }
+  a[href]::after { content: ""; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Manage users" %}{% endblock %}
+{% block content %}
+<div class="row" style="align-items:center;">
+  <h1 class="mt-0">{% trans "Manage users" %}</h1>
+  <div style="flex:0 0 auto;">
+    <a class="btn btn--small" href="{% url 'accounts:role_matrix' %}">{% trans "Form roles" %}</a>
+    <a class="btn btn--small" href="{% url 'accounts:predefined_values' %}">{% trans "Predefined values" %}</a>
+    <a class="btn btn--primary btn--small" href="{% url 'accounts:user_create' %}">{% trans "New user" %}</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>{% trans "Name" %}</th><th>{% trans "Username" %}</th><th>{% trans "Initials" %}</th>
+        <th>{% trans "Administrator" %}</th><th>{% trans "Active" %}</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.get_full_name|default:"—" }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.initials }}</td>
+        <td>{% if u.is_administrator %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+        <td>{% if u.is_active %}{% trans "Active" %}{% else %}{% trans "Inactive" %}{% endif %}</td>
+        <td style="white-space:nowrap;">
+          <a class="btn btn--small" href="{% url 'accounts:user_edit' u.id %}">{% trans "Edit" %}</a>
+          {% if u.is_active %}
+          <form action="{% url 'accounts:user_deactivate' u.id %}" method="post" style="display:inline;">
+            {% csrf_token %}<button class="btn btn--small" type="submit">{% trans "Deactivate" %}</button>
+          </form>
+          {% endif %}
+          <form action="{% url 'accounts:user_delete' u.id %}" method="post" style="display:inline;"
+                onsubmit="return confirm('{% trans "Permanently delete this account? This cannot be undone." %}');">
+            {% csrf_token %}<button class="btn btn--small btn--danger" type="submit">{% trans "Delete" %}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Dashboard" %}{% endblock %}
+{% block content %}
+<h1>{% trans "Your forms" %}</h1>
+
+{% if is_administrator %}
+  <p class="card">
+    {% trans "You're signed in as an Administrator." %}
+    <a href="{% url 'accounts:user_list' %}">{% trans "Manage users" %}</a> ·
+    <a href="{% url 'accounts:role_matrix' %}">{% trans "Manage form roles" %}</a> ·
+    <a href="{% url 'accounts:predefined_values' %}">{% trans "Manage predefined values" %}</a>
+  </p>
+{% endif %}
+
+{% if not rows %}
+  <p class="card text-secondary">{% trans "You don't have a role on any form yet. Ask an administrator to assign you one." %}</p>
+{% endif %}
+
+<div class="stack">
+  {% for row in rows %}
+  <div class="card row" style="align-items:center;">
+    <div>
+      <h2 class="mt-0">{{ row.name }}</h2>
+      <span class="status-pill" style="background:transparent;border:1px solid var(--color-border);color:var(--color-text-secondary);">
+        {% if row.role == "USER" %}{% trans "Your role: User" %}
+        {% elif row.role == "SUPERVISOR" %}{% trans "Your role: Supervisor" %}
+        {% elif row.role == "AUDITOR" %}{% trans "Your role: Auditor" %}
+        {% else %}{% trans "Administrator access" %}{% endif %}
+      </span>
+    </div>
+    <div style="flex:0 0 auto;">
+      {% if row.url_name %}
+        <a class="btn btn--primary" href="{% url row.url_name %}">{% trans "Open" %}</a>
+      {% else %}
+        <span class="text-secondary">{% trans "Data-entry screens coming soon" %}</span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

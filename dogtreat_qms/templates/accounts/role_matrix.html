@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Form roles" %}{% endblock %}
+{% block content %}
+<h1>{% trans "Form roles" %}</h1>
+<p class="text-secondary">{% trans "A person can hold at most one role on any given form — User, Supervisor, or Auditor — but different roles on different forms." %}</p>
+
+<div class="card" style="max-width:520px;">
+  <h2>{% trans "Add / update an assignment" %}</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn--primary">{% trans "Save assignment" %}</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>{% trans "Form" %}</th><th>{% trans "Person" %}</th><th>{% trans "Role" %}</th><th>{% trans "Active" %}</th><th></th></tr></thead>
+    <tbody>
+      {% for a in assignments %}
+      <tr>
+        <td>{{ a.form_type.name_en }}</td>
+        <td>{{ a.user }}</td>
+        <td>{{ a.get_role_display }}</td>
+        <td>{% if a.is_active %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</td>
+        <td>
+          <form action="{% url 'accounts:role_assignment_remove' a.id %}" method="post" style="display:inline;">
+            {% csrf_token %}<button class="btn btn--small btn--danger" type="submit">{% trans "Remove" %}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
