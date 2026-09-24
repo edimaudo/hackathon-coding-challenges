@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>3D Cube Slideshow</title>
+<style>
+  :root {
+    --bg: #0d0e10;
+    --fg: #f6f5f1;
+    --muted: rgba(246,245,241,.62);
+    --control-bg: rgba(13,14,16,.5);
+    --control-border: rgba(246,245,241,.2);
+    --control-hover: rgba(246,245,241,.1);
+    --stage-shadow: rgba(0,0,0,.34);
+    --cols: 4;
+    --rows: 3;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f4f2ee;
+    --fg: #171717;
+    --muted: rgba(23,23,23,.6);
+    --control-bg: rgba(244,242,238,.68);
+    --control-border: rgba(23,23,23,.18);
+    --control-hover: rgba(23,23,23,.07);
+    --stage-shadow: rgba(0,0,0,.16);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { width:100%; height:100%; margin:0; }
+
+  body {
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--fg);
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    transition:background .24s ease,color .24s ease;
+  }
+
+  button, input { font:inherit; }
+  button { -webkit-tap-highlight-color:transparent; }
+
+  .stage {
+    position:relative;
+    width:100vw;
+    height:100svh;
+    overflow:hidden;
+    isolation:isolate;
+    background:var(--bg);
+  }
+
+  .stage::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.03), transparent 58%);
+    z-index:1;
+  }
+
+  html[data-theme="light"] .stage::after {
+    background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.3), transparent 62%);
+  }
+
+  .slideshow {
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    perspective:1800px;
+    perspective-origin:50% 50%;
+  }
+
+  /* Normal viewing state: a completely flat image. No cube remains visible. */
+  .slide {
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:#111;
+    opacity:0;
+    z-index:0;
+    backface-visibility:hidden;
+  }
+
+  .slide.is-current { opacity:1; z-index:2; }
+  .slide.is-transition { opacity:1; z-index:3; }
+
+  .slide-image {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+
+  .slide-image::selection { background:transparent; }
+
+  /* Transition-only grid. Each cell is a small cube, but only exists during the transition. */
+  .cube-transition {
+    position:absolute;
+    inset:0;
+    z-index:10;
+    display:grid;
+    grid-template-columns:repeat(var(--cols),1fr);
+    grid-template-rows:repeat(var(--rows),1fr);
+    pointer-events:none;
+    opacity:0;
+    visibility:hidden;
+  }
+
+  .cube-transition.active {
+    opacity:1;
+    visibility:visible;
+  }
+
+  .cube-cell {
+    position:relative;
+    min-width:0;
+    min-height:0;
+    perspective:900px;
+    overflow:visible;
+  }
+
+  .cube {
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+
+  .cube-face {
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:#111;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    box-shadow:0 0 0 1px rgba(255,255,255,.035);
+  }
+
+  .cube-face.current { transform:translateZ(calc(var(--depth, 0px) / 2)); }
+
+  /* The incoming image lives on the adjacent face. Rotating the cell cube 90° brings it to front. */
+  .cube-face.next { transform-origin:center center; transform:rotateY(90deg) translateZ(calc(var(--depth, 0px) / 2)); }
+
+  .cube-face img {
+    position:absolute;
+    width:var(--full-w);
+    height:var(--full-h);
+    max-width:none;
+    max-height:none;
+    object-fit:cover;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+
+  .cube-face.current img,
+  .cube-face.next img { inset:var(--offset-x,0) var(--offset-y,0); }
+
+  .cube-face::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,.03), rgba(0,0,0,.13));
+    pointer-events:none;
+  }
+
+  html[data-theme="light"] .cube-face::after {
+    background:linear-gradient(135deg, rgba(255,255,255,.14), rgba(0,0,0,.08));
+  }
+
+  .progress {
+    position:absolute;
+    left:24px;
+    right:24px;
+    bottom:22px;
+    height:1px;
+    overflow:hidden;
+    z-index:30;
+    pointer-events:none;
+    background:var(--control-border);
+  }
+
+  .progress-bar {
+    width:0;
+    height:100%;
+    background:var(--fg);
+    opacity:.72;
+  }
+
+  .counter {
+    position:absolute;
+    left:24px;
+    top:22px;
+    z-index:30;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1;
+    letter-spacing:.04em;
+    pointer-events:none;
+  }
+
+  .controls {
+    position:absolute;
+    right:24px;
+    bottom:36px;
+    z-index:40;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .control,
+  .theme {
+    appearance:none;
+    width:44px;
+    height:44px;
+    padding:0;
+    display:grid;
+    place-items:center;
+    border:1px solid var(--control-border);
+    border-radius:50%;
+    background:var(--control-bg);
+    color:var(--fg);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    cursor:pointer;
+    transition:background .16s ease,border-color .16s ease,transform .16s ease;
+  }
+
+  .control.pause { width:48px; height:48px; }
+
+  .control:hover,
+  .theme:hover { background:var(--control-hover); }
+
+  .control:active,
+  .theme:active { transform:translateY(1px); }
+
+  .control:focus-visible,
+  .theme:focus-visible { outline:2px solid var(--fg); outline-offset:3px; }
+
+  .icon { width:15px; height:15px; display:block; fill:none; stroke:currentColor; stroke-width:1.65; stroke-linecap:round; stroke-linejoin:round; }
+  .theme .icon { width:16px; height:16px; }
+
+  .theme-wrap {
+    position:absolute;
+    right:24px;
+    top:20px;
+    z-index:40;
+  }
+
+  .media-input { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+
+  .media-trigger {
+    position:absolute;
+    left:24px;
+    bottom:34px;
+    z-index:40;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:transparent;
+    color:var(--muted);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    transition:color .16s ease,opacity .16s ease;
+  }
+
+  .media-trigger:hover { color:var(--fg); }
+  .media-trigger .icon { width:15px; height:15px; }
+
+  .sr-only { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important; }
+
+  @media (max-width:800px) {
+    :root { --cols:3; --rows:2; }
+    .controls { right:16px; bottom:30px; }
+    .theme-wrap { right:16px; top:14px; }
+    .counter { left:16px; top:17px; }
+    .media-trigger { left:16px; bottom:29px; }
+    .progress { left:16px; right:16px; bottom:18px; }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    .cube-transition { display:none!important; }
+    .progress-bar { transition:none!important; }
+  }
+</style>
+</head>
+<body>
+<main class="stage" id="stage" aria-label="Image slideshow">
+  <div class="slideshow" id="slideshow">
+    <div class="slide is-current" id="currentSlide"><img class="slide-image" id="currentImage" alt=""></div>
+  </div>
+
+  <div class="cube-transition" id="cubeTransition" aria-hidden="true"></div>
+
+  <div class="counter" id="counter">01 / 06</div>
+  <div class="progress" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+
+  <label class="media-trigger" for="mediaInput" title="Load images" aria-label="Load images">
+    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16.5V19a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2.5"/><path d="M12 4v11M7.5 9.5 12 5l4.5 4.5"/></svg>
+  </label>
+  <input class="media-input" id="mediaInput" type="file" accept="image/*" multiple>
+
+  <div class="theme-wrap">
+    <button class="theme" id="themeButton" type="button" aria-label="Switch to light mode" title="Switch theme">
+      <svg class="icon" id="themeIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+    </button>
+  </div>
+
+  <nav class="controls" aria-label="Slideshow controls">
+    <button class="control" id="prevButton" type="button" aria-label="Previous image" title="Previous image">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button class="control pause" id="pauseButton" type="button" aria-label="Pause slideshow" title="Pause slideshow">
+      <svg class="icon" id="pauseIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg>
+    </button>
+    <button class="control" id="nextButton" type="button" aria-label="Next image" title="Next image">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </nav>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  const INTERVAL_MS = 10000;
+  const TRANSITION_MS = 900;
+  const COLS = 4;
+  const ROWS = 3;
+
+  /*
+   * Packaged-image option:
+   * const IMAGE_SOURCES = [
+   *   'images/01.jpg',
+   *   'images/02.jpg',
+   *   'images/03.jpg',
+   *   'images/04.jpg'
+   * ];
+   *
+   * Local preview: use the upload button and select any number of images.
+   */
+  const IMAGE_SOURCES = [];
+
+  const stage = document.getElementById('stage');
+  const currentImage = document.getElementById('currentImage');
+  const cubeTransition = document.getElementById('cubeTransition');
+  const mediaInput = document.getElementById('mediaInput');
+  const counter = document.getElementById('counter');
+  const progressBar = document.getElementById('progressBar');
+  const prevButton = document.getElementById('prevButton');
+  const nextButton = document.getElementById('nextButton');
+  const pauseButton = document.getElementById('pauseButton');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const themeButton = document.getElementById('themeButton');
+  const themeIcon = document.getElementById('themeIcon');
+
+  const fallback = (n, hue) => {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="hsl(${hue} 36% 64%)"/>
+            <stop offset="1" stop-color="hsl(${(hue + 78) % 360} 28% 18%)"/>
+          </linearGradient>
+        </defs>
+        <rect width="1920" height="1080" fill="url(#g)"/>
+        <circle cx="1510" cy="170" r="300" fill="white" opacity=".08"/>
+        <path d="M0 830 C390 660 590 1110 1080 790 S1640 720 1920 500 V1080 H0Z" fill="white" opacity=".07"/>
+        <text x="100" y="950" fill="white" font-family="Arial,sans-serif" font-size="70" letter-spacing="10" opacity=".86">IMAGE ${String(n).padStart(2,'0')}</text>
+      </svg>`;
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  };
+  const fallbackImages = Array.from({length:6}, (_,i) => fallback(i+1, 190 + i*29));
+
+  let images = [...IMAGE_SOURCES];
+  let objectUrls = [];
+  let index = 0;
+  let elapsed = 0;
+  let playing = true;
+  let animating = false;
+  let lastFrame = performance.now();
+
+  const sourceList = () => images.length ? images : fallbackImages;
+  const count = () => sourceList().length;
+  const at = (i) => sourceList()[(i + count()) % count()];
+
+  function updateCounter() {
+    counter.textContent = `${String(index + 1).padStart(2,'0')} / ${String(count()).padStart(2,'0')}`;
+  }
+
+  function updatePauseUI() {
+    if (playing) {
+      pauseIcon.innerHTML = '<path d="M9 5v14M15 5v14"/>';
+      pauseButton.setAttribute('aria-label','Pause slideshow');
+      pauseButton.title = 'Pause slideshow';
+    } else {
+      pauseIcon.innerHTML = '<path d="m9 6 9 6-9 6Z"/>';
+      pauseButton.setAttribute('aria-label','Play slideshow');
+      pauseButton.title = 'Play slideshow';
+    }
+  }
+
+  function updateThemeIcon(theme) {
+    if (theme === 'light') {
+      themeIcon.innerHTML = '<path d="M12 3a9 9 0 1 0 9 9c0-.34-.02-.67-.06-1A7.5 7.5 0 0 1 13 5.06c-.33-.04-.66-.06-1-.06Z"/>';
+      themeButton.setAttribute('aria-label','Switch to dark mode');
+    } else {
+      themeIcon.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>';
+      themeButton.setAttribute('aria-label','Switch to light mode');
+    }
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem('cubeSlideshowTheme', theme); } catch (_) {}
+    updateThemeIcon(theme);
+  }
+
+  function initTheme() {
+    let saved = null;
+    try { saved = localStorage.getItem('cubeSlideshowTheme'); } catch (_) {}
+    if (saved === 'light' || saved === 'dark') {
+      applyTheme(saved);
+      return;
+    }
+    const media = window.matchMedia('(prefers-color-scheme: light)');
+    applyTheme(media.matches ? 'light' : 'dark');
+    media.addEventListener?.('change', e => {
+      try {
+        if (!localStorage.getItem('cubeSlideshowTheme')) applyTheme(e.matches ? 'light' : 'dark');
+      } catch (_) {}
+    });
+  }
+
+  function setFlatImage(src, alt) {
+    currentImage.src = src;
+    currentImage.alt = alt;
+  }
+
+  function buildCubeTransition(fromSrc, toSrc, direction) {
+    cubeTransition.innerHTML = '';
+    cubeTransition.style.setProperty('--cols', COLS);
+    cubeTransition.style.setProperty('--rows', ROWS);
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const cell = document.createElement('div');
+        cell.className = 'cube-cell';
+        const cube = document.createElement('div');
+        cube.className = 'cube';
+
+        const currentFace = document.createElement('div');
+        currentFace.className = 'cube-face current';
+        const currentImg = document.createElement('img');
+        currentImg.src = fromSrc;
+        currentImg.alt = '';
+
+        const nextFace = document.createElement('div');
+        nextFace.className = 'cube-face next';
+        const nextImg = document.createElement('img');
+        nextImg.src = toSrc;
+        nextImg.alt = '';
+
+        const positionX = `${(-col * 100).toFixed(3)}%`;
+        const positionY = `${(-row * 100).toFixed(3)}%`;
+        for (const img of [currentImg, nextImg]) {
+          img.style.width = `${COLS * 100}%`;
+          img.style.height = `${ROWS * 100}%`;
+          img.style.left = positionX;
+          img.style.top = positionY;
+        }
+
+        currentFace.appendChild(currentImg);
+        nextFace.appendChild(nextImg);
+        cube.appendChild(currentFace);
+        cube.appendChild(nextFace);
+        cell.appendChild(cube);
+        cubeTransition.appendChild(cell);
+        cube.style.setProperty('--depth', `${cell.getBoundingClientRect().width}px`);
+
+        const delay = (row * COLS + col) * 28;
+        const axis = direction === 'next' ? -1 : 1;
+        const easing = 'cubic-bezier(.22,.72,.2,1)';
+        cube.animate(
+          [
+            { transform: 'rotateY(0deg)', filter: 'brightness(1)', opacity: 1 },
+            { transform: `rotateY(${axis * 90}deg)`, filter: 'brightness(.92)', opacity: 1 }
+          ],
+          { duration: TRANSITION_MS, delay, easing, fill:'forwards' }
+        );
+      }
+    }
+
+    cubeTransition.classList.add('active');
+
+    // Ensure all animations are available before the transition starts visually.
+    requestAnimationFrame(() => {
+      cubeTransition.querySelectorAll('.cube').forEach((cube, i) => {
+        const delay = i * 28;
+        const axis = direction === 'next' ? -1 : 1;
+        cube.getAnimations().forEach(animation => { animation.cancel(); });
+        cube.animate(
+          [
+            { transform: 'rotateY(0deg)', filter: 'brightness(1)' },
+            { transform: `rotateY(${axis * 90}deg)`, filter: 'brightness(.92)' }
+          ],
+          { duration: TRANSITION_MS, delay, easing:'cubic-bezier(.22,.72,.2,1)', fill:'forwards' }
+        );
+      });
+    });
+  }
+
+  function cleanupTransition() {
+    cubeTransition.classList.remove('active');
+    cubeTransition.innerHTML = '';
+    animating = false;
+  }
+
+  function go(direction) {
+    if (animating || count() < 2) return;
+    animating = true;
+    elapsed = 0;
+
+    const previous = index;
+    index = direction === 'next'
+      ? (index + 1) % count()
+      : (index - 1 + count()) % count();
+
+    const fromSrc = at(previous);
+    const toSrc = at(index);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      setFlatImage(toSrc, `Image ${index + 1}`);
+      updateCounter();
+      cleanupTransition();
+      return;
+    }
+
+    buildCubeTransition(fromSrc, toSrc, direction);
+    updateCounter();
+
+    window.setTimeout(() => {
+      setFlatImage(toSrc, `Image ${index + 1}`);
+      cleanupTransition();
+    }, TRANSITION_MS + (COLS * ROWS - 1) * 28 + 30);
+  }
+
+  function next() { go('next'); }
+  function previous() { go('prev'); }
+
+  function frame(now) {
+    const delta = Math.min(100, now - lastFrame);
+    lastFrame = now;
+    if (playing && !animating) {
+      elapsed += delta;
+      if (elapsed >= INTERVAL_MS) {
+        elapsed %= INTERVAL_MS;
+        next();
+      }
+    }
+    progressBar.style.width = `${Math.min(100, elapsed / INTERVAL_MS * 100)}%`;
+    requestAnimationFrame(frame);
+  }
+
+  mediaInput.addEventListener('change', (event) => {
+    const selected = [...event.target.files].filter(file => file.type.startsWith('image/'));
+    if (!selected.length) return;
+    objectUrls.forEach(url => URL.revokeObjectURL(url));
+    objectUrls = selected.map(file => URL.createObjectURL(file));
+    images = objectUrls;
+    index = 0;
+    elapsed = 0;
+    setFlatImage(at(0), 'Image 1');
+    updateCounter();
+  });
+
+  prevButton.addEventListener('click', previous);
+  nextButton.addEventListener('click', next);
+  pauseButton.addEventListener('click', () => {
+    playing = !playing;
+    updatePauseUI();
+  });
+
+  themeButton.addEventListener('click', () => {
+    const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    applyTheme(nextTheme);
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.target.matches('input,textarea,select,button')) return;
+    if (event.key === 'ArrowLeft') previous();
+    if (event.key === 'ArrowRight') next();
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      event.preventDefault();
+      playing = !playing;
+      updatePauseUI();
+    }
+  });
+
+  window.addEventListener('beforeunload', () => {
+    objectUrls.forEach(url => URL.revokeObjectURL(url));
+  });
+
+  initTheme();
+  updatePauseUI();
+  setFlatImage(at(0), 'Image 1');
+  updateCounter();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
