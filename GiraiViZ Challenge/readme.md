@@ -38,14 +38,14 @@ Focus:
 This theme invites participants to explore the major global trends identified in the Global Index on Responsible AI report and deepen on how these trends look across different regions. Through this theme, participants can highlight key patterns, disparities, and
 commonalities that define the global state of responsible AI. This theme provides flexibility, allowing participants to focus on specific trends or create a broader visualisation that integrates multiple trends.
 
-**Theme 3**: Open Theme – Participant’s Choice
+<!-- **Theme 3**: Open Theme – Participant’s Choice
 What is the Open Theme?
 The Open Theme gives participants the freedom to explore any aspect of the Global Index on Responsible AI or any other Responsible AI related topics. This theme encourages creative exploration and allows participants to focus on emerging issues or sector-specific
 challenges, for instance.
 
 Focus:
 In this theme, participants have complete creative freedom to explore any topic related to Responsible AI. They are encouraged to use data from the Global Index on Responsible AI to explore areas not fully covered by the Index. This theme is designed to foster innovation
-and creative thinking, providing participants with the flexibility to approach Responsible AI from new and interesting angles.
+and creative thinking, providing participants with the flexibility to approach Responsible AI from new and interesting angles. -->
 
 
 ### Judging Criteria
