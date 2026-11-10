@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en-CA" data-theme="light" data-font-size="medium">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A simulation and planning tool for patient flow, wait times, and site coordination across two North York collection locations.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f6f9">
+<title>North York Patient Flow Planner</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="app-root">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="header-row">
+        <div class="header-copy">
+          <h1>North York patient flow planner</h1>
+          <p>Understand where patients wait, compare the two North York locations, and identify practical ways to improve the patient experience.</p>
+        </div>
+        <div class="header-tools">
+          <aside class="model-note" aria-label="Model status">
+            <strong>Planning model</strong>
+            Uses editable assumptions and simulated arrivals. It is not connected to live LifeLabs systems.
+          </aside>
+          <div class="display-controls" aria-label="Display settings">
+            <div class="display-setting">
+              <span class="control-label" id="font-size-label">Text size</span>
+              <div class="font-size-options" role="group" aria-labelledby="font-size-label">
+                <button type="button" class="font-size-option" data-font-option="small" aria-pressed="false" aria-label="Small text, 90%">Small<span>90%</span></button>
+                <button type="button" class="font-size-option" data-font-option="medium" aria-pressed="true" aria-label="Medium text, 100%">Medium<span>100%</span></button>
+                <button type="button" class="font-size-option" data-font-option="large" aria-pressed="false" aria-label="Large text, 115%">Large<span>115%</span></button>
+              </div>
+            </div>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode">Dark mode</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-wrap">
+      <nav aria-label="Main sections">
+        <div class="nav-tabs" role="group" aria-label="Choose a section">
+          <button type="button" data-view="overview" aria-pressed="true">Overview</button>
+          <button type="button" data-view="simulation" aria-pressed="false">Simulation</button>
+          <button type="button" data-view="insights" aria-pressed="false">Business Insights</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="view active" id="view-overview" aria-labelledby="overview-title" tabindex="-1">
+      <div class="section-head">
+        <div>
+          <h2 id="overview-title">Business overview</h2>
+          <p>A business view of likely waits, busy periods, and what may happen if staffing or patient choices change. These are planning estimates, not live wait times.</p>
+        </div>
+        <div class="button-row">
+          <button type="button" class="btn btn-primary" id="run-overview">Update estimates</button>
+          <button type="button" class="btn" id="export-results">Export results</button>
+        </div>
+      </div>
+      <div class="kpi-grid" aria-label="Selected scenario indicators">
+        <article class="kpi">
+          <div class="kpi-label">Average time spent waiting</div>
+          <div class="kpi-value" id="kpi-avg">—</div>
+          <div class="kpi-foot" id="kpi-avg-delta">Waiting before and between service steps</div>
+        </article>
+        <article class="kpi">
+          <div class="kpi-label">Longer-wait estimate</div>
+          <div class="kpi-value" id="kpi-p90">—</div>
+          <div class="kpi-foot">Nine out of ten simulated patients wait no longer than this</div>
+        </article>
+        <article class="kpi">
+          <div class="kpi-label">Average arrival-to-procedure time</div>
+          <div class="kpi-value" id="kpi-elapsed">—</div>
+          <div class="kpi-foot">Includes intake time; in rerouting scenarios, includes travel</div>
+        </article>
+        <article class="kpi">
+          <div class="kpi-label">Peak number waiting</div>
+          <div class="kpi-value" id="kpi-peak">—</div>
+          <div class="kpi-foot" id="kpi-overflow">People waiting at the busiest simulated minute</div>
+        </article>
+      </div>
+
+      <div class="two-col">
+        <section class="panel" aria-labelledby="hourly-title">
+          <h3 id="hourly-title">Typical wait by time of day</h3>
+          <p class="muted small">All simulated patients, grouped by the hour they arrive at a site. This is a model estimate, not a live status board.</p>
+          <div id="hourly-chart" aria-live="polite"></div>
+        </section>
+        <section class="panel" aria-labelledby="site-summary-title">
+          <h3 id="site-summary-title">Site comparison</h3>
+          <p class="muted small">Typical estimates under current settings.</p>
+          <div class="site-grid" id="site-cards">
+            <div class="site-card"><p>Run the model to calculate site estimates.</p></div>
+          </div>
+        </section>
+      </div>
+
+      <h3 class="subheading">Assumptions behind these estimates</h3>
+      <div class="panel">
+        <div class="pill-line" id="assumption-summary"><span>Model has not run yet.</span></div>
+        <hr class="divider">
+        <p class="small muted">The estimates assume patients check in with reception and then wait for a procedure staff member. The model does not yet account for clinical priorities, missed appointments, patients who leave, accessibility accommodations, or unexpected staffing changes.</p>
+      </div>
+      <p class="inline-status" id="overview-status" aria-live="polite"></p>
+    </section>
+
+    <section class="view" id="view-simulation" aria-labelledby="simulation-title" tabindex="-1">
+      <div class="section-head">
+        <div>
+          <h2 id="simulation-title">Simulation expert view</h2>
+          <p>Adjust arrival demand, service-time distributions, staffing, capacity, and routing assumptions. Compare the baseline with alternative operating scenarios.</p>
+        </div>
+      </div>
+      <div class="notice" style="margin-bottom:18px"><strong>Data status:</strong> Sheppard's two procedure staff and five seats are based on your description. Finch's staffing, seating, demand and booking mix are placeholders because exact operating figures were not supplied. Replace them with observed data before using results for operational decisions.</div>
+      <section class="panel" aria-labelledby="model-upgrades-title" style="margin-bottom:18px">
+        <h3 id="model-upgrades-title">Highest-value simulation improvements</h3>
+        <div class="principle-grid">
+          <article class="principle"><h3>Measure arrivals in 15-minute intervals</h3><p>Separate each site, day of week, appointment versus walk-in, and holiday or unusual days. This is the strongest first step for replacing the hand-set arrival pattern.</p></article>
+          <article class="principle"><h3>Model real staff coverage</h3><p>Add shift start/end times, breaks, late starts, and the number of intake staff by time of day. A daily headcount alone can hide the bottleneck.</p></article>
+          <article class="principle"><h3>Represent different visit durations</h3><p>Estimate duration distributions for short, typical, and more complex collections using de-identified categories. Include early/late arrivals, cancellations and no-shows when those rates are available.</p></article>
+          <article class="principle"><h3>Validate, then show uncertainty</h3><p>Compare predicted and observed median waits, 90th-percentile waits, peak queue lengths, and seat overflow on held-out days. Report a range across simulation runs rather than a single number alone.</p></article>
+        </div>
+      </section>
+      <div class="form-grid">
+        <fieldset class="fieldset-card">
+          <legend>Bathurst–Sheppard</legend>
+          <div class="field"><label for="shep-demand">Patients per day</label><input id="shep-demand" type="number" min="1" max="500" step="1" value="100"><span class="help">Total expected arrivals, appointments and walk-ins combined.</span></div>
+          <div class="field"><label for="shep-receptionists">Reception staff</label><input id="shep-receptionists" type="number" min="1" max="6" step="1" value="1"><span class="help">Number processing intake at the same time.</span></div>
+          <div class="field"><label for="shep-staff">Procedure staff</label><input id="shep-staff" type="number" min="1" max="12" step="1" value="2"></div>
+          <div class="field"><label for="shep-seats">Waiting-room seats</label><input id="shep-seats" type="number" min="1" max="100" step="1" value="5"></div>
+          <div class="field"><label for="shep-booking">Arrivals with a booking (%)</label><input id="shep-booking" type="number" min="0" max="100" step="5" value="65"><span class="help">The remainder are modeled as walk-ins.</span></div>
+          <div class="field"><label for="shep-service">Mean procedure time (minutes)</label><input id="shep-service" type="number" min="2" max="40" step="0.5" value="7.5"></div>
+        </fieldset>
+        <fieldset class="fieldset-card">
+          <legend>Bathurst–Finch</legend>
+          <div class="field"><label for="finch-demand">Patients per day</label><input id="finch-demand" type="number" min="1" max="500" step="1" value="120"><span class="help">Illustrative assumption; replace with a measured daily count.</span></div>
+          <div class="field"><label for="finch-receptionists">Reception staff</label><input id="finch-receptionists" type="number" min="1" max="6" step="1" value="1"><span class="help">Placeholder until Finch staffing is known.</span></div>
+          <div class="field"><label for="finch-staff">Procedure staff</label><input id="finch-staff" type="number" min="1" max="12" step="1" value="3"><span class="help">Illustrative assumption, not verified staffing.</span></div>
+          <div class="field"><label for="finch-seats">Waiting-room seats</label><input id="finch-seats" type="number" min="1" max="100" step="1" value="12"><span class="help">Illustrative assumption, not verified seating.</span></div>
+          <div class="field"><label for="finch-booking">Arrivals with a booking (%)</label><input id="finch-booking" type="number" min="0" max="100" step="5" value="65"></div>
+          <div class="field"><label for="finch-service">Mean procedure time (minutes)</label><input id="finch-service" type="number" min="2" max="40" step="0.5" value="7.5"></div>
+        </fieldset>
+        <fieldset class="fieldset-card">
+          <legend>Shared process</legend>
+          <div class="field"><label for="open-hours">Operating hours per day</label><input id="open-hours" type="number" min="4" max="14" step="0.5" value="8"></div>
+          <div class="field"><label for="intake-time">Mean intake time (minutes)</label><input id="intake-time" type="number" min="0.5" max="15" step="0.5" value="2"><span class="help">Average time to check in one patient.</span></div>
+          <div class="field"><label for="intake-cv">Intake-time variability</label><input id="intake-cv" type="number" min="0.05" max="1.5" step="0.05" value="0.25"><span class="help">Higher values mean intake durations vary more around the average.</span></div>
+          <div class="field"><label for="procedure-cv">Procedure-time variability</label><input id="procedure-cv" type="number" min="0.1" max="1.5" step="0.05" value="0.42"><span class="help">Coefficient of variation: higher values mean procedure durations vary more around the average.</span></div>
+          <div class="field"><label for="booked-pattern">Appointment arrival pattern</label><select id="booked-pattern"><option value="morning" selected>Morning-weighted: 60% in first 3 hours</option><option value="even">Evenly spaced across operating hours</option></select><span class="help">Assumption to validate against actual booking timestamps.</span></div>
+          <div class="check-field"><input id="use-observed-arrivals" type="checkbox"><label for="use-observed-arrivals">Use observed arrival-time profile when available<span class="help">Requires at least 30 anonymized arrival rows per site. Daily patient volume remains editable; insufficient data falls back to the selected pattern.</span></label></div>
+          <div class="field"><label for="replications">Simulation replications</label><input id="replications" type="number" min="10" max="150" step="5" value="40"><span class="help">More replications reduce random variation; they do not replace real data.</span></div>
+          <div class="field"><label for="redirect-share">Sheppard walk-ins choosing Finch (%)</label><input id="redirect-share" type="number" min="0" max="40" step="5" value="15"><span class="help">Share modeled as choosing Finch with consent, before travelling; no one already waiting is transferred.</span></div>
+          <div class="field"><label for="travel-time">Added travel time to Finch (minutes)</label><input id="travel-time" type="number" min="0" max="60" step="1" value="10"><span class="help">Planning assumption; replace with actual patient-specific journey estimates.</span></div>
+        </fieldset>
+      </div>
+      <div class="panel" style="margin-top:18px">
+        <div class="check-field">
+          <input id="extra-staff" type="checkbox">
+          <label for="extra-staff">Test one additional procedure staff member at Bathurst–Sheppard in the scenario only<span class="help">Use to compare an internal capacity change against cross-site coordination.</span></label>
+        </div>
+        <div class="button-row">
+          <button type="button" class="btn btn-primary" id="run-simulation">Run simulation</button>
+          <button type="button" class="btn" id="reset-defaults">Reset assumptions</button>
+          <span class="inline-status" id="simulation-status" aria-live="polite"></span>
+        </div>
+      </div>
+      <h3 class="subheading">How the model works</h3>
+      <div class="panel">
+        <ol style="padding-left:22px;margin:0;display:grid;gap:9px">
+          <li>Patients arrive through two streams: booked appointments follow the selected morning-weighted or even pattern, and walk-ins are drawn from an early-day-weighted arrival profile.</li>
+          <li>Every patient passes through one receptionist for intake, then joins a first-come, first-served queue for one of the procedure staff.</li>
+          <li>Procedure times vary around each site's configured mean. The simulation repeats across multiple random days and reports averages and the 90th percentile.</li>
+          <li>The seat calculation estimates people physically waiting, excluding the person at intake and people actively undergoing a procedure. People are not assumed to abandon the queue when all seats are occupied.</li>
+          <li>In the coordination scenario, a configurable share of Sheppard walk-ins is offered the option of attending Finch before travelling. Added travel time is counted in the patient's time-to-procedure estimate.</li>
+        </ol>
+        <hr class="divider">
+        <p class="muted small" style="margin-bottom:0">This is a discrete-event planning approximation, not a validated operational digital twin. The assumed arrival pattern, service-time distribution, queue discipline and absence of clinical priority classes should be checked against local observations.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-insights" aria-labelledby="insights-title" tabindex="-1">
+      <div class="section-head">
+        <div>
+          <h2 id="insights-title">Business Insights</h2>
+          <p>Bring patient experience, cross-site choices, and observed service data together to identify changes that may reduce waits without simply moving the problem to the other location.</p>
+        </div>
+      </div>
+      <div class="section-head">
+        <div>
+          <h3 id="experience-title">Patient experience and waiting psychology</h3>
+          <p>Use the wait estimate alongside uncertainty, perceived fairness, crowding, privacy, and how patients spend their time.</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <section class="panel" aria-labelledby="friction-title">
+          <h3 id="friction-title">Waiting-experience friction indicator</h3>
+          <p class="muted small">A transparent design heuristic based on the current simulation, not a validated psychological scale or patient-reported measure.</p>
+          <div class="score-row">
+            <div>
+              <div class="score" id="experience-score">—</div>
+              <div class="muted small">out of 100; higher indicates more modeled friction</div>
+            </div>
+            <div style="max-width:190px;text-align:right" class="muted small" id="experience-level">Run the model first.</div>
+          </div>
+          <div class="score-scale" role="img" aria-label="Heuristic waiting experience friction score"><div class="score-fill" id="experience-fill"></div></div>
+          <p class="muted small">Score inputs: simulated queue wait (45 points maximum), uncertainty about progress (25), pressure beyond available seats (20), and clarity of process/fairness (10). Communication and occupied-time settings alter the heuristic only; they do not shorten actual queues.</p>
+          <hr class="divider">
+          <h3>Test experience design choices</h3>
+          <div class="intervention-controls">
+            <div class="field"><label for="updates">Wait updates</label><select id="updates"><option value="0">No proactive updates</option><option value="1">Initial estimate only</option><option value="2" selected>Update about every 10 minutes</option></select></div>
+            <div class="check-field"><input id="estimate-visible" type="checkbox" checked><label for="estimate-visible">Show an estimated wait range<span class="help">Make estimates ranges and update them when conditions change.</span></label></div>
+            <div class="check-field"><input id="queue-explained" type="checkbox" checked><label for="queue-explained">Explain the queue and priority rules<span class="help">Tell patients what happens next without exposing another patient's information.</span></label></div>
+            <div class="check-field"><input id="occupied-time" type="checkbox" checked><label for="occupied-time">Offer useful, optional waiting activities<span class="help">For example, clear preparation information or accessible reading material.</span></label></div>
+            <div class="check-field"><input id="privacy-practice" type="checkbox" checked><label for="privacy-practice">Protect privacy during intake and calling patients<span class="help">Use a discreet call process and avoid announcing sensitive details.</span></label></div>
+          </div>
+        </section>
+        <section class="panel" aria-labelledby="actions-title">
+          <h3 id="actions-title">Actions suggested by the current scenario</h3>
+          <div id="experience-recommendations">
+            <p class="muted">Run the simulation to generate scenario-specific recommendations.</p>
+          </div>
+        </section>
+      </div>
+      <h3 class="subheading">Design principles to test with patients and staff</h3>
+      <div class="principle-grid">
+        <article class="principle"><h3>Reduce uncertainty</h3><p>Give a realistic wait range, explain the next step, and update it when the queue changes. Avoid false precision or an estimate that is never refreshed.</p></article>
+        <article class="principle"><h3>Make the process feel fair</h3><p>Explain how booked appointments and walk-ins are handled, including legitimate clinical exceptions. Consistent explanations can prevent queue order from feeling arbitrary.</p></article>
+        <article class="principle"><h3>Make time less idle</h3><p>Offer voluntary, low-effort activities and useful preparation information. These may improve the experience but do not replace staffing or flow improvements.</p></article>
+        <article class="principle"><h3>Reduce crowding and protect dignity</h3><p>Track demand beyond the five-seat capacity at Sheppard. Maintain access for people who need seating, minimize sensitive conversations at reception, and consider sensory load.</p></article>
+      </div>
+      <div class="notice" style="margin-top:18px"><strong>Measure the real experience.</strong> Run brief, voluntary surveys about perceived wait, clarity of information, fairness, privacy, and overall experience. Compare responses with timestamp-derived actual waits, without collecting more personal or health information than necessary.</div>
+    </section>
+
+    <section class="view" id="view-coordination" aria-labelledby="coordination-title" tabindex="-1">
+      <div class="section-head">
+        <div>
+          <h3 id="coordination-title">When to offer the other location</h3>
+          <p>Test whether offering some Sheppard walk-ins a choice of Finch could reduce pressure across the pair without simply shifting the queue.</p>
+        </div>
+        <div class="button-row"><button type="button" class="btn btn-primary" id="find-routing">Find a routing share to test</button></div>
+      </div>
+      <div class="notice" style="margin-bottom:18px"><strong>Operating principle:</strong> any alternative-site offer should be made before the patient travels, with informed choice and confirmation that the other site can perform the required collection. This model has no live capacity feed and must not be used to send patients between sites in real time.</div>
+      <section class="panel" aria-labelledby="routing-rule-title" style="margin-bottom:18px">
+        <h3 id="routing-rule-title">Decision rule: offer a choice, do not direct</h3>
+        <p>As an initial planning rule, consider offering Finch only when its estimated time to procedure <strong>including travel</strong> is at least 10 minutes shorter than staying at Sheppard, Finch has room to absorb more patients, and the required service is available. The patient must be free to decline without penalty.</p>
+        <div class="notice"><strong>Validate before recommending:</strong> compare the current wait and travel time, confirm Finch has capacity and offers the required service, and make sure the estimate is recent. This prototype has no live capacity connection.</div>
+        <p class="muted small" style="margin:12px 0 0">Psychology matters: give patients a clear comparison of wait and travel time, explain why the alternative is being offered, and avoid creating a sense that they are losing their place or being pushed elsewhere. Do not offer a transfer to anyone already waiting at a site.</p>
+      </section>
+      <div class="kpi-grid">
+        <article class="kpi"><div class="kpi-label">Baseline average time to procedure</div><div class="kpi-value" id="coord-base-elapsed">—</div><div class="kpi-foot">No rerouting; intake included</div></article>
+        <article class="kpi"><div class="kpi-label">Selected scenario time to procedure</div><div class="kpi-value" id="coord-scenario-elapsed">—</div><div class="kpi-foot" id="coord-elapsed-delta">Includes modeled travel for redirected patients</div></article>
+        <article class="kpi"><div class="kpi-label">Change in average queue wait</div><div class="kpi-value" id="coord-wait-delta">—</div><div class="kpi-foot">Scenario versus baseline</div></article>
+        <article class="kpi"><div class="kpi-label">Modeled seat-overflow minutes</div><div class="kpi-value" id="coord-overflow">—</div><div class="kpi-foot" id="coord-overflow-delta">Across both sites during operating hours</div></article>
+      </div>
+      <section class="panel" aria-labelledby="coord-table-title">
+        <h3 id="coord-table-title">Baseline and selected scenario by site</h3>
+        <div class="table-wrap"><table>
+          <caption class="sr-only">Comparison of baseline and coordination scenario estimates by site.</caption>
+          <thead><tr><th scope="col">Site and measure</th><th scope="col" class="num">Baseline</th><th scope="col" class="num">Selected scenario</th><th scope="col" class="num">Change</th></tr></thead>
+          <tbody id="coord-table-body"><tr><td colspan="4">Run the model to populate this comparison.</td></tr></tbody>
+        </table></div>
+        <p class="muted small" style="margin:12px 0 0">The routing search tests 0%, 10%, 20%, 30%, and 40% of Sheppard walk-ins using a smaller number of replications per setting. It selects the share with the lowest mean time-to-procedure plus a modest seat-pressure penalty. Treat the result as a candidate scenario to validate, not an operating recommendation.</p>
+        <div class="inline-status" id="routing-status" aria-live="polite" style="margin-top:10px"></div>
+      </section>
+      <h3 class="subheading">Coordination options beyond rerouting</h3>
+      <div class="principle-grid">
+        <article class="principle"><h3>Publish a consistent wait estimate</h3><p>Present wait ranges for both locations only when the estimates are current. State the timestamp of the last update and avoid implying a guaranteed wait.</p></article>
+        <article class="principle"><h3>Use appointment mix to smooth demand</h3><p>Compare demand by 15-minute interval, rather than relying on daily totals. Test slot spacing and protected walk-in capacity before changing booking rules.</p></article>
+        <article class="principle"><h3>Define a capacity-sharing protocol</h3><p>Set explicit thresholds, service eligibility, patient consent, accessibility checks, and staff ownership before introducing cross-site recommendations.</p></article>
+        <article class="principle"><h3>Review outcomes together</h3><p>Monitor median and 90th percentile wait, queue overflow, patients who leave, staff workload, and patient-reported clarity at both sites—not just the site receiving fewer arrivals.</p></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-data" aria-labelledby="data-title" tabindex="-1">
+      <div class="section-head">
+        <div>
+          <h3 id="data-title">Observed data and calibration</h3>
+          <p>Import an anonymized CSV of timestamp offsets to summarize actual waits and compare them with the model assumptions.</p>
+        </div>
+      </div>
+      <div class="notice" style="margin-bottom:18px"><strong>Privacy:</strong> this prototype reads the selected CSV in your browser and does not send it to a server. Do not include names, dates of birth, health-card numbers, test details, addresses, or any other patient identifiers. Use anonymized, authorized operational data only.</div>
+      <section class="panel">
+        <h3>CSV format</h3>
+        <p class="muted small">Use one row per patient, with times expressed as minutes since that day's opening. Required columns are shown below. The site field should contain “Sheppard” or “Finch”. Booked/walk-in mode is optional.</p>
+        <div class="table-wrap" style="margin-bottom:14px"><table>
+          <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th><th scope="col">Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>site</code></td><td>Sheppard or Finch</td><td>Sheppard</td></tr>
+            <tr><td><code>arrival_min</code></td><td>Arrival time since opening</td><td>24</td></tr>
+            <tr><td><code>intake_start_min</code></td><td>When reception intake starts</td><td>30</td></tr>
+            <tr><td><code>intake_end_min</code></td><td>When reception intake ends</td><td>32</td></tr>
+            <tr><td><code>procedure_start_min</code></td><td>When procedure begins</td><td>47</td></tr>
+            <tr><td><code>completion_min</code></td><td>When procedure ends</td><td>54</td></tr>
+            <tr><td><code>mode</code> (optional)</td><td>Booked or walk-in</td><td>walk-in</td></tr>
+          </tbody>
+        </table></div>
+        <div class="button-row" style="margin:0 0 18px"><button type="button" class="btn" id="download-template">Download sample CSV</button></div>
+        <div class="upload-area">
+          <label for="csv-file"><strong>Select an anonymized CSV file</strong></label>
+          <p>Accepted format: plain CSV with the required headers above.</p>
+          <input id="csv-file" type="file" accept=".csv,text/csv">
+          <p id="csv-status" class="inline-status" aria-live="polite" style="margin:10px 0 0">No file loaded.</p>
+        </div>
+      </section>
+      <section class="panel" style="margin-top:18px" aria-labelledby="observed-title">
+        <h3 id="observed-title">Observed wait summary</h3>
+        <div id="observed-summary"><p class="muted">Load an anonymized CSV to calculate actual wait and service-time summaries. No patient-level data will be retained after you refresh the page.</p></div>
+        <div class="button-row" id="calibration-actions" style="display:none"><button type="button" class="btn btn-primary" id="apply-observed-service">Apply observed mean service times to model</button><button type="button" class="btn" id="clear-observed">Clear imported data</button></div>
+      </section>
+      <div class="notice" style="margin-top:18px"><strong>Calibration guidance:</strong> use several representative days, include arrival-time peaks and slower procedures, and separate sites and appointment modes. Match observed wait distributions—not only the daily average—before relying on a scenario. Avoid fitting the model to an unusual day without documenting why it was unusual.</div>
+    </section>
+  </main>
+
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
